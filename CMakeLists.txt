@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 2.8cmake)
 project(monitor_cthulhu)
 
 set(SOURCE_FILES
-        lib/functions_lib.h
+        header/base_functions.h
         src/monitor_cthulhu.c
-        lib/structs_lib.h)
+        header/structs.h header/monitor_cthulhu.h src/base_functions.c)
 
+set(CMAKE_C_FLAGS "-std=c99")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_executable(monitor_cthulhu ${SOURCE_FILES})
