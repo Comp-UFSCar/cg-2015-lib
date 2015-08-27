@@ -1,8 +1,7 @@
-#ifndef STRUCTS_LIB_H
-#define STRUCTS_LIB_H
+#ifndef STRUCTS_H
+#define STRUCTS_H
 
-#define MAXIMOX 640
-#define MAXIMOY 480
+#include "monitor_cthulhu.h"
 
 struct Color {
   float red,
@@ -11,7 +10,7 @@ struct Color {
         };
 
 struct Point {
-	float x,
+	double x,
 		y;
 };
 
