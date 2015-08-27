@@ -1,71 +1,98 @@
-//	Computer Graphics and Multimedia - UFSCar/Fall 2015
-//	Prof. Murillo Rodrigo Petrucelli Homem
-//	Student: Thales Eduardo Adair Menato - 407976
+//#####################################################################################################################
+//#	Computer Graphics and Multimedia - UFSCar/Fall 2015
+//#	Prof. Murillo Rodrigo Petrucelli Homem
+//#	Student: Thales Eduardo Adair Menato - 407976
+//#####################################################################################################################
+//# References:
+//# http://math.msu.su/~vvb/2course/Borisenko/CppProjects/GWindow/xintro.html#vars
+//# http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/048/4879/4879l1.html
+//#####################################################################################################################
+//# If you're compiling manually using gcc don't forget to add the flags: -lm -lX11 -std=c99
+//#####################################################################################################################
 
-//TODO: Compilation description using make
+#include "../header/monitor_cthulhu.h"
+#include "../header/base_functions.h"
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <X11/Xlib.h>
-#include "../lib/structs_lib.h"
-#include "../lib/functions_lib.h"
+// Global variables
+Display * display;
+Window window;
+GC gc;
+Visual * visual;
+XGCValues values;
+int screen, dplanes, height = MAXIMOY, width = MAXIMOX, ret = TRUE;
 
-#define EventMask (KeyPressMask | ExposureMask)
+int init_x(){
+    if ((display = XOpenDisplay(NULL)) == NULL)
+        ret = FALSE;
+
+    else {
+        screen = DefaultScreen(display);
+        dplanes = DisplayPlanes(display, screen);
+        visual = XDefaultVisual(display, screen);
+
+        if (!(window = XCreateSimpleWindow(display, RootWindow(display, screen), 0, 0, width, height, 1,
+                                           BlackPixel(display, screen), WhitePixel(display, screen))))
+            ret = FALSE;
+
+        else {
+            XSelectInput(display, window, EventMask);
+            XStoreName(display, window, "Monitor Cthulhu ^(;.;)^");
+            gc = XCreateGC(display, window, 0, &values);
+
+            XMapWindow(display, window);
+            XSync(display, False);
+        }
+    }
+    return ret;
+}
+
+void close_x(){
+    XFreeGC(display, gc);
+    XDestroyWindow(display, window);
+    XCloseDisplay(display);
+    exit(1);
+}
 
 int main(int argc, char *argv[]) {
 
-	// TODO: trabalhar input do codigo
-	if(argc > 1)
-		printf("\n%s\n", argv[1]);
+    //region Console Input
+    // TODO: trabalhar input do codigo
+    if(argc > 1)
+        printf("\n%s\n", argv[1]);
+    //endregion
 
-	Display               * display;
-	XImage                * ximage;
-	Window                window;
-	XEvent                an_event;
-	GC                    gc;
-	Visual                * visual;
-	XGCValues             values;
-	int                   screen, dplanes;
-	int                   height, width, ret = 1;
+    //region XInterface
+    if (init_x() == TRUE) {
 
-	width = MAXIMOX;
-	height = MAXIMOY;
-	
-	if ((display = XOpenDisplay(NULL)) == NULL) ret = 0;
-	else {  
-		screen = DefaultScreen(display);
-		dplanes = DisplayPlanes(display,screen);   
-		visual = XDefaultVisual(display,screen);
-	
-		if (!(window=XCreateSimpleWindow(display,RootWindow(display,screen),0,0,width,height,1,BlackPixel(display,screen),WhitePixel(display,screen)))) ret = 0;
-		else {
-			XSelectInput(display, window, EventMask);
-			XStoreName(display, window, "Monitor Virtual");
-			gc = XCreateGC(display, window, 0, &values);
-	
-			XMapWindow(display,window);
-			XSync(display,False);
-	
-			ximage = XCreateImage(display,visual,dplanes,ZPixmap,0,malloc(width*height*sizeof(int)),width,height,8,0);
+        XImage *ximage;
+        XEvent an_event;
+        KeySym key;
 
-            XDump(ximage);
+        ximage = XCreateImage(display, visual, dplanes, ZPixmap, 0, malloc(width * height * sizeof(int)), width,
+                              height, 8, 0);
 
-			/* Trata os eventos */
-			while(1) {
-			XNextEvent(display, &an_event);
-				switch(an_event.type) {
-					case Expose:
-						XPutImage(display,window,gc,ximage,0,0,0,0,width,height);
-						break;
-					
-					/* outros eventos ... */
-				}
-			}
-		}
-	}
-	return 0;
+        struct Image img;
+        XDump(ximage, img);
+
+        char text[255];
+
+        do {
+            XNextEvent(display, &an_event);
+            switch (an_event.type) {
+                case Expose:
+                    XPutImage(display, window, gc, ximage, 0, 0, 0, 0, width, height);
+                    break;
+                case KeyPress:
+                    if (XLookupString(&an_event.xkey, text, 255, &key, 0) == 1) {
+
+                    }
+                    break;
+            }
+        } while (text[0] != 27); // ESCAPE to exit the loop
+
+        close_x();
+    }
+    //endregion
+
+    return 0;
 }
-	
-
