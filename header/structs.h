@@ -15,7 +15,7 @@ struct Point {
 };
 
 struct Image {
-	int matrix[MAXIMOX][MAXIMOY];
+	int matrix[MAXIMOY][MAXIMOX];
 };
 
 #endif
