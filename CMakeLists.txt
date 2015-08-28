@@ -4,7 +4,7 @@ project(monitor_cthulhu)
 set(SOURCE_FILES
         header/base_functions.h
         src/monitor_cthulhu.c
-        header/structs.h header/monitor_cthulhu.h src/base_functions.c)
+        header/structs.h header/monitor_cthulhu.h src/base_functions.c src/console_input.c header/console_input.h)
 
 set(CMAKE_C_FLAGS "-std=c99")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
