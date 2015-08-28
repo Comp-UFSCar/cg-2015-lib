@@ -1,9 +1,19 @@
+#include "../header/structs.h"
 #include "../header/base_functions.h"
 
 void init_image(struct Image *img){
-    for(int i = 0; i < MAXIMOX; i++)
-        for(int j = 0; j < MAXIMOY; j++)
+    for(int i = 0; i < MAXIMOY; i++)
+        for(int j = 0; j < MAXIMOX; j++)
             img->matrix[i][j] = 0;
+}
+
+void print_image(struct Image img){
+    for(int i = 0; i < MAXIMOY; i++){
+        for(int j = 0; j < MAXIMOX; j++){
+            printf("%d", img.matrix[i][j]);
+        }
+        printf("\n");
+    }
 }
 
 void XDump(XImage *ximage, struct Image img) {
@@ -53,7 +63,6 @@ struct Point srn2srd(struct Point mc){
     return dc;
 }
 
-//TODO: drawLine using Bresenham's Line Algorithm
 struct Image drawLine_Bresenham(struct Point p0, struct Point p1){
 
     struct Image line;
@@ -68,8 +77,7 @@ struct Image drawLine_Bresenham(struct Point p0, struct Point p1){
 
     for(int i = 1; i < deltaX; i++)
     {
-        // escreve na matriz
-        // desenha(x, y)
+        line.matrix[(int)y][(int)x] = 1;
 
         while( error >= 0 ) {
             y++;
@@ -80,22 +88,29 @@ struct Image drawLine_Bresenham(struct Point p0, struct Point p1){
         error += m;
 
     }
-
-//  pseudocode from Wikipedia
-// *  function line(x0, y0, x1, y1)
-//     real deltax := x1 - x0
-//     real deltay := y1 - y0
-//     real error := 0
-//     real deltaerr := abs (deltay / deltax)    // Assume deltax != 0 (line is not vertical),
-//           // note that this division needs to be done in a way that preserves the fractional part
-//     int y := y0
-//     for x from x0 to x1
-//         plot(x,y)
-//         error := error + deltaerr
-//         while error ≥ 0.5 then
-//             plot(x, y)
-//             y := y + sign(y1 - y0)
-//             error := error - 1.0
-
+    return line;
 }
 
+struct Image input_line_bresenham(char *argv[]){
+    struct Point x0, x1;
+
+    x0.x = atof(argv[2]);
+    x0.y = atof(argv[3]);
+    x1.x = atof(argv[4]);
+    x1.y = atof(argv[5]);
+    return drawLine_Bresenham(x0, x1);
+}
+
+struct Image input_line_bresenham_sru(char *argv[]){
+    struct Point
+        p0u = {atof(argv[3]), atof(argv[4])}, p0n, p0d,
+        p1u = {atof(argv[5]), atof(argv[6])}, p1n, p1d;
+
+    p0n = sru2srn(p0u, atof(argv[7]), atof(argv[8]), atof(argv[9]), atof(argv[10]));
+    p1n = sru2srn(p1u, atof(argv[7]), atof(argv[8]), atof(argv[9]), atof(argv[10]));
+
+    p0d = srn2srd(p0n);
+    p1d = srn2srd(p1n);
+
+    return drawLine_Bresenham(p0d, p1d);
+}
