@@ -63,7 +63,7 @@ struct Point srn2srd(struct Point mc){
     return dc;
 }
 
-struct Image drawLine_Bresenham(struct Point p0, struct Point p1){
+struct Image drawLineDDA(struct Point p0, struct Point p1){
 
     struct Image line;
     init_image(&line);
@@ -73,7 +73,7 @@ struct Image drawLine_Bresenham(struct Point p0, struct Point p1){
     double deltaY = p1.y - p0.y;
 
     double m = deltaY / deltaX;
-    double error = m - (1.0/2.0); // abs(m)
+    double error = m - (0.5); // abs(m)
 
     for(int i = 1; i < deltaX; i++)
     {
@@ -91,17 +91,18 @@ struct Image drawLine_Bresenham(struct Point p0, struct Point p1){
     return line;
 }
 
-struct Image input_line_bresenham(char *argv[]){
+struct Image inputLineDDA(char **argv){
     struct Point x0, x1;
 
     x0.x = atof(argv[2]);
     x0.y = atof(argv[3]);
     x1.x = atof(argv[4]);
     x1.y = atof(argv[5]);
-    return drawLine_Bresenham(x0, x1);
+
+    return drawLineDDA(x0, x1);
 }
 
-struct Image input_line_bresenham_sru(char *argv[]){
+struct Image inputLineDDA_sru(char **argv){
     struct Point
         p0u = {atof(argv[3]), atof(argv[4])}, p0n, p0d,
         p1u = {atof(argv[5]), atof(argv[6])}, p1n, p1d;
@@ -112,5 +113,5 @@ struct Image input_line_bresenham_sru(char *argv[]){
     p0d = srn2srd(p0n);
     p1d = srn2srd(p1n);
 
-    return drawLine_Bresenham(p0d, p1d);
+    return drawLineDDA(p0d, p1d);
 }

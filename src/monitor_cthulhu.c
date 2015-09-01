@@ -73,16 +73,16 @@ int main(int argc, char *argv[]) {
         KeySym key;
 
         struct Image img;
+        init_image(&img);
 
         // parse the user input
         switch(input_parser(argc, argv)){
-            case LINE_BRESENHAM:
-                input_line_bresenham(argv);
+            case LINE_DDA:
+                img = inputLineDDA(argv);
                 break;
-            case LINE_BRESENHAM_SRU:
-                input_line_bresenham_sru(argv);
+            case LINE_DDA_SRU:
+                img = inputLineDDA_sru(argv);
                 break;
-
             case INPUT_MISTAKE:
                 input = FALSE;
                 break;
