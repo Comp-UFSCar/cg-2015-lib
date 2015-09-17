@@ -7,13 +7,16 @@
 #ifndef FUNCTIONS_LIB_H
 #define FUNCTIONS_LIB_H
 
+// X11
+int init_x();
+void show_x();
+void close_x();
+
+// Structures
+void init_image(struct Image *img);
+void debug_image(struct Image img);
 void XDump(XImage *ximage, struct Image img);
 struct Point sru2srn(struct Point p, double xmin, double ymin, double xmax, double ymax);
 struct Point srn2srd(struct Point mc);
-struct Image drawLineDDA(struct Point p0, struct Point p1);
-void init_image(struct Image *img);
-void print_image(struct Image img);
-struct Image inputLineDDA(char **argv);
-struct Image inputLineDDA_sru(char **argv);
 
 #endif

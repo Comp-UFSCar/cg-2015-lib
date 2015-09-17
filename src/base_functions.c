@@ -1,13 +1,69 @@
 #include "../header/structs.h"
 #include "../header/base_functions.h"
 
+int init_x(){
+    height = MAXIMOY;
+    width = MAXIMOX;
+    ret = True;
+
+    if ((display = XOpenDisplay(NULL)) == NULL)
+        ret = False;
+
+    else {
+        screen = DefaultScreen(display);
+        dplanes = DisplayPlanes(display, screen);
+        visual = XDefaultVisual(display, screen);
+
+        if (!(window = XCreateSimpleWindow(display, RootWindow(display, screen), 0, 0, width, height, 1,
+                                           BlackPixel(display, screen), WhitePixel(display, screen))))
+            ret = False;
+
+        else {
+            XSelectInput(display, window, EventMask);
+            XStoreName(display, window, "Monitor Cthulhu ^(;.;)^");
+            gc = XCreateGC(display, window, 0, &values);
+
+            XMapWindow(display, window);
+            XSync(display, False);
+
+            // variables
+            ximage = XCreateImage(display, visual, dplanes, ZPixmap, 0, malloc(width * height * sizeof(int)), width,
+                                  height, 8, 0);
+        }
+    }
+    return ret;
+}
+
+void show_x(){
+    char text[255];
+    do {
+        XNextEvent(display, &an_event);
+        switch (an_event.type) {
+            case Expose:
+                XPutImage(display, window, gc, ximage, 0, 0, 0, 0, width, height);
+                break;
+            case KeyPress:
+                if (XLookupString(&an_event.xkey, text, 255, &key, 0) == 1) {
+
+                }
+                break;
+        }
+    } while (text[0] != 27); // ESCAPE to exit the loop
+}
+
+void close_x(){
+    XFreeGC(display, gc);
+    XDestroyWindow(display, window);
+    XCloseDisplay(display);
+}
+
 void init_image(struct Image *img){
     for(int i = 0; i < MAXIMOY; i++)
         for(int j = 0; j < MAXIMOX; j++)
             img->matrix[i][j] = 0;
 }
 
-void print_image(struct Image img){
+void debug_image(struct Image img){
     for(int i = 0; i < MAXIMOY; i++){
         for(int j = 0; j < MAXIMOX; j++){
             printf("%d", img.matrix[i][j]);
@@ -61,57 +117,4 @@ struct Point srn2srd(struct Point mc){
     dc.y = round(mc.y * (MAXIMOY - 1));
 
     return dc;
-}
-
-struct Image drawLineDDA(struct Point p0, struct Point p1){
-
-    struct Image line;
-    init_image(&line);
-
-    double x = p0.x, y = p0.y;
-    double deltaX = p1.x - p0.x;
-    double deltaY = p1.y - p0.y;
-
-    double m = deltaY / deltaX;
-    double error = m - (0.5); // abs(m)
-
-    for(int i = 1; i < deltaX; i++)
-    {
-        line.matrix[(int)y][(int)x] = 1;
-
-        while( error >= 0 ) {
-            y++;
-            error--;
-        }
-
-        x++;
-        error += m;
-
-    }
-    return line;
-}
-
-struct Image inputLineDDA(char **argv){
-    struct Point x0, x1;
-
-    x0.x = atof(argv[2]);
-    x0.y = atof(argv[3]);
-    x1.x = atof(argv[4]);
-    x1.y = atof(argv[5]);
-
-    return drawLineDDA(x0, x1);
-}
-
-struct Image inputLineDDA_sru(char **argv){
-    struct Point
-        p0u = {atof(argv[3]), atof(argv[4])}, p0n, p0d,
-        p1u = {atof(argv[5]), atof(argv[6])}, p1n, p1d;
-
-    p0n = sru2srn(p0u, atof(argv[7]), atof(argv[8]), atof(argv[9]), atof(argv[10]));
-    p1n = sru2srn(p1u, atof(argv[7]), atof(argv[8]), atof(argv[9]), atof(argv[10]));
-
-    p0d = srn2srd(p0n);
-    p1d = srn2srd(p1n);
-
-    return drawLineDDA(p0d, p1d);
 }

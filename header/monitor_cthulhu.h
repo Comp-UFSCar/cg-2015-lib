@@ -3,8 +3,6 @@
 
 #define MAXIMOX 640
 #define MAXIMOY 480
-#define TRUE 1
-#define FALSE 0
 
 #include <math.h>
 #include <stdio.h>
@@ -13,6 +11,17 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include "structs.h"
+
+// Global variables
+Display * display;
+Window window;
+GC gc;
+Visual * visual;
+XGCValues values;
+XImage *ximage;
+XEvent an_event;
+KeySym key;
+int screen, dplanes, height, width, ret;
 
 #define EventMask (KeyPressMask | ExposureMask)
 

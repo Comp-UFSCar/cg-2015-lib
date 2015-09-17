@@ -12,103 +12,25 @@
  */
 
 #include "../header/monitor_cthulhu.h"
-#include "../header/console_input.h"
 #include "../header/base_functions.h"
-
-// Global variables
-Display * display;
-Window window;
-GC gc;
-Visual * visual;
-XGCValues values;
-int screen, dplanes, height = MAXIMOY, width = MAXIMOX, ret = TRUE;
-
-int init_x(){
-    if ((display = XOpenDisplay(NULL)) == NULL)
-        ret = FALSE;
-
-    else {
-        screen = DefaultScreen(display);
-        dplanes = DisplayPlanes(display, screen);
-        visual = XDefaultVisual(display, screen);
-
-        if (!(window = XCreateSimpleWindow(display, RootWindow(display, screen), 0, 0, width, height, 1,
-                                           BlackPixel(display, screen), WhitePixel(display, screen))))
-            ret = FALSE;
-
-        else {
-            XSelectInput(display, window, EventMask);
-            XStoreName(display, window, "Monitor Cthulhu ^(;.;)^");
-            gc = XCreateGC(display, window, 0, &values);
-
-            XMapWindow(display, window);
-            XSync(display, False);
-        }
-    }
-    return ret;
-}
-
-void close_x(){
-    XFreeGC(display, gc);
-    XDestroyWindow(display, window);
-    XCloseDisplay(display);
-}
+#include "../header/line.h"
 
 int main(int argc, char *argv[]) {
-    int input = FALSE;
-
-    if(argc > 1)
-        input = TRUE;
-    else
-        print_help_menu();
-
     //region XInterface
-    if (init_x() == TRUE && input == TRUE) {
-
-        // variables
-        XImage *ximage;
-        ximage = XCreateImage(display, visual, dplanes, ZPixmap, 0, malloc(width * height * sizeof(int)), width,
-                              height, 8, 0);
-        XEvent an_event;
-        KeySym key;
+    if (init_x() == True) {
 
         struct Image img;
         init_image(&img);
 
-        // parse the user input
-        switch(input_parser(argc, argv)){
-            case LINE_DDA:
-                img = inputLineDDA(argv);
-                break;
-            case LINE_DDA_SRU:
-                img = inputLineDDA_sru(argv);
-                break;
-            case INPUT_MISTAKE:
-                input = FALSE;
-                break;
-            case INPUT_ERROR:
-                input = FALSE;
-                print_help_menu();
-                break;
-        };
+        struct Point p1 = {10, 20};
+        struct Point p2 = {250, 250};
+
+        img = drawLine(p1, p2);
 
         XDump(ximage, img);
 
-        char text[255];
-        if(input == TRUE)
-            do {
-                XNextEvent(display, &an_event);
-                switch (an_event.type) {
-                    case Expose:
-                        XPutImage(display, window, gc, ximage, 0, 0, 0, 0, width, height);
-                        break;
-                    case KeyPress:
-                        if (XLookupString(&an_event.xkey, text, 255, &key, 0) == 1) {
-
-                        }
-                        break;
-                }
-            } while (text[0] != 27); // ESCAPE to exit the loop
+        // main loop
+        show_x();
 
         close_x();
     }
