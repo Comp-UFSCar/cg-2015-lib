@@ -2,3 +2,4 @@
 echo "Compilando..."
 gcc monitor_debug.c ../src/base_functions.c -o debug -lm -lX11 -std=c99
 echo "Finalizado!"
+./debug
