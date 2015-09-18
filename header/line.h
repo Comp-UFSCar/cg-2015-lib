@@ -4,6 +4,7 @@
 #include "structs.h"
 #include "base_functions.h"
 
-struct Image drawLine(struct Point p0, struct Point p1);
+void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window * win,
+                      struct BufferDevice *device, int color);
 
 #endif //LINE_H

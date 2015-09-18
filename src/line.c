@@ -1,29 +1,55 @@
 #include "../header/line.h"
 
-struct Image drawLine(struct Point p0, struct Point p1){
+void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window * win,
+                      struct BufferDevice *device, int color){
 
-    struct Image line;
-    init_image(&line);
+    float a, b;
+    int i, j, aux;
+    struct Point2D *pn1, *pd1, *pn2, *pd2;
 
-    double x = p0.x, y = p0.y;
-    double deltaX = p1.x - p0.x;
-    double deltaY = p1.y - p0.y;
+    pn1 = sru2srn(p1, win);
+    pd1 = srn2srd(pn1, device);
+    pn2 = sru2srn(p2, win);
+    pd2 = srn2srd(pn2, device);
 
-    double m = deltaY / deltaX;
-    double error = m - (0.5); // abs(m)
-
-    for(int i = 1; i < deltaX; i++)
-    {
-        line.matrix[(int)y][(int)x] = 1;
-
-        while( error >= 0 ) {
-            y++;
-            error--;
-        }
-
-        x++;
-        error += m;
-
+    if (pd1->x > pd2->x) {
+        aux = pd1->x;
+        pd1->x = pd2->x;
+        pd2->x = aux;
+        aux = pd1->y;
+        pd1->y = pd2->y;
+        pd2->y = aux;
     }
-    return line;
+
+    i = pd1->x;
+    j = pd1->y;
+
+    if (pd1->x == pd2->x) {
+        while (j < pd2->y) {
+            device->buffer[(device->ymax - j - 1) * device->xmax + i] = color;
+            j++;
+        }
+    }
+    else {
+        a = (pd2->y - pd1->y)/(pd2->x - pd1->x);
+        b = pd1->y - a*pd1->x;
+        while (i < pd2->x) {
+            device->buffer[(device->ymax - j - 1) * device->xmax + i] = color;
+            aux = j;
+            j = round(a*(++i) + b);
+
+            if (j > aux) {
+                while (aux < j) {
+                    device->buffer[(device->ymax - aux - 1) * device->xmax + i] = color;
+                    aux++;
+                }
+            }
+            if (j < aux) {
+                while (aux > j) {
+                    device->buffer[(device->ymax - aux - 1) * device->xmax + i] = color;
+                    aux--;
+                }
+            }
+        }
+    }
 }

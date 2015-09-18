@@ -16,25 +16,26 @@
 #include "../header/line.h"
 
 int main(int argc, char *argv[]) {
-    //region XInterface
-    if (init_x() == True) {
 
-        struct Image img;
-        init_image(&img);
+    struct BufferDevice *device;
+    struct Palette *palette;
 
-        struct Point p1 = {10, 20};
-        struct Point p2 = {250, 250};
+    device = createBuffer(1024, 768);
+    palette = createPalette(3);
 
-        img = drawLine(p1, p2);
+    if (XInit(device) == True) {
 
-        XDump(ximage, img);
+        struct Window *window1 = createWindow(0, 1024, 0, 768);
 
-        // main loop
-        show_x();
+        struct Point2D p1 = {10, 20};
+        struct Point2D p2 = {250, 250};
 
-        close_x();
+        drawLine(&p1, &p2, window1, device, 255);
+
+        XDump(ximage, device, palette);
+
+        XClose();
     }
-    //endregion
 
     return 0;
 }

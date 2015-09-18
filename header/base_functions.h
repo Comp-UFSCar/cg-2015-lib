@@ -8,15 +8,19 @@
 #define FUNCTIONS_LIB_H
 
 // X11
-int init_x();
-void show_x();
-void close_x();
+int XInit(struct BufferDevice *);
+void XShow();
+void XClose();
+void XDump(XImage *, struct BufferDevice *, struct Palette *);
 
 // Structures
-void init_image(struct Image *img);
-void debug_image(struct Image img);
-void XDump(XImage *ximage, struct Image img);
-struct Point sru2srn(struct Point p, double xmin, double ymin, double xmax, double ymax);
-struct Point srn2srd(struct Point mc);
+struct Universe * setUniverse(float, float, float, float);
+struct BufferDevice * createBuffer(int, int);
+struct Window * createWindow(float, float, float, float);
+struct Point2D * sru2srn(struct Point2D *, struct Window *);
+struct Point2D * srn2srd(struct Point2D *, struct BufferDevice *);
+struct Point2D * setPoint(float, float, int);
+struct Object2D * createObject(int);
+struct Palette * createPalette(int);
 
 #endif
