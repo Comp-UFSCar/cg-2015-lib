@@ -75,13 +75,16 @@ struct Point2D * srn2srd(struct Point2D * normP, struct BufferDevice * device);
  *  @param the color number that will be used as reference on Palette.
  *  @return Memory address with Point2D using parameters values.
  */
-struct Point2D * setPoint(float x, float y, int color);
+struct Point2D * setPoint(double x, double y, int color);
 
 /** @brief Creates an Object2D allocating it's memory based on number of points.
- *  @param numberOfPoints Number of points that this object will have.
+ *  @param max_points Maximum of points that this object will have.
  *  @return Memory address with Object2D struct.
  */
-struct Object2D * createObject(int numberOfPoints);
+struct Object2D * createObject(int max_points);
+
+//TODO Documentacao do setObject
+int setObject(struct Point2D * p, struct Object2D * obj);
 
 /** @brief Create a Palette with parameter number of colors.
  *  @param numberOfColors The number of colors that this Palette will have.
@@ -99,13 +102,13 @@ struct Palette * createPalette(int numberOfColors);
  *  @param blue float value in range [0,1] for Blue color.
  *  @return True if added to palette, False if palette was already full.
  */
-int SetColor(float red, float green, float blue, struct Palette * palette);
+int setColor(float red, float green, float blue, struct Palette *palette);
 
 /** @brief Get a Color from Palette.
  *  @param colorNumber Index of color wanted.
  *  @param palette Palette that will be used.
  *  @return Color defined on palette.
  */
-struct Color * GetColor(int colorNumber, struct Palette * palette);
+struct Color *getColor(int colorNumber, struct Palette *palette);
 
 #endif

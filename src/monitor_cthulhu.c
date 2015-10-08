@@ -26,8 +26,8 @@ int main(int argc, char *argv[]) {
     device = createBuffer(640, 480);
 
     palette = createPalette(2);
-    SetColor(0, 0, 0, palette);
-    SetColor(0, 1, 0, palette);
+    setColor(0, 0, 0, palette);
+    setColor(0, 1, 0, palette);
 
     window1 = createWindow(-10, 10, -10, 10);
 
@@ -36,9 +36,13 @@ int main(int argc, char *argv[]) {
     p1 = setPoint(-5, -5, 1);
     p2 = setPoint(5, 5, 1);
 
-    drawLine(p1, p2, window1, device, 1);
+//    drawLine(p1, p2, window1, device, 1);
 
-    XDump(device, palette);
+//    XDump(device, palette);
+
+    struct Object2D *circle;
+    circle = createCircle(2f, 1);
+
 
     return 0;
 }

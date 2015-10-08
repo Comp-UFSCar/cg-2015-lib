@@ -40,7 +40,7 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
             return False;
         else {
             XSelectInput(display, window, EventMask);
-            XStoreName(display, window, "Monitor Virtual");
+            XStoreName(display, window, "^(;,;)^ Monitor Cthulhu ^(;,;)^");
             gc = XCreateGC(display, window, 0, &values);
 
             XMapWindow(display, window);
@@ -51,7 +51,7 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
 
             for (m = 0; m < height; m++) {
                 for (n = 0; n < width; n++) {
-                    color = GetColor(device->buffer[m * width + n], palette);
+                    color = getColor(device->buffer[m * width + n], palette);
                     ximage->data[(m * 4) * width + n * 4] = (char) round((color->blue) * 255);
                     ximage->data[(m * 4) * width + n * 4 + 1] = (char) round((color->green) * 255);
                     ximage->data[(m * 4) * width + n * 4 + 2] = (char) round((color->red) * 255);
@@ -159,7 +159,7 @@ struct Point2D *srn2srd(struct Point2D *normP, struct BufferDevice *device) {
 /*
  * Allocates memory and set values for Point2D members.
  */
-struct Point2D *setPoint(float x, float y, int color) {
+struct Point2D *setPoint(double x, double y, int color) {
     struct Point2D *point = (struct Point2D *) malloc(sizeof(struct Point2D *));
 
     point->x = x;
@@ -172,13 +172,24 @@ struct Point2D *setPoint(float x, float y, int color) {
 /*
  * Creates an Object2D allocating it's memory based on number of points.
  */
-struct Object2D *createObject(int numberOfPoints) {
+struct Object2D *createObject(int max_points) {
     struct Object2D *object = (struct Object2D *) malloc(sizeof(struct Object2D *));
 
-    object->numberOfPoints = numberOfPoints;
-    object->points = (struct Point2D *) malloc(sizeof(struct Point2D) * numberOfPoints);
+    object->max_points = max_points;
+    object->curr_point = 0;
+    object->points = (struct Point2D *) malloc(sizeof(struct Point2D) * max_points);
 
     return object;
+}
+
+//TODO Documentacao do setObject
+int setObject(struct Point2D *p, struct Object2D *obj) {
+    if (obj->curr_point > obj->max_points)
+        return False;
+
+    obj->points[obj->curr_point] = *p;
+    obj->curr_point++;
+    return True;
 }
 
 /*
@@ -197,7 +208,7 @@ struct Palette *createPalette(int numberOfColors) {
 /*
  * Set a new color to a Palette.
  */
-int SetColor(float red, float green, float blue, struct Palette *palette) {
+int setColor(float red, float green, float blue, struct Palette *palette) {
     if (palette->currentColor >= palette->numberOfColors)
         return False;
 
@@ -213,7 +224,7 @@ int SetColor(float red, float green, float blue, struct Palette *palette) {
 /*
  * Get a Color from Palette.
  */
-struct Color *GetColor(int colorNumber, struct Palette *palette) {
+struct Color *getColor(int colorNumber, struct Palette *palette) {
 
     return &palette->colors[colorNumber];
 }
