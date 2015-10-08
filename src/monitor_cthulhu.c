@@ -2,7 +2,9 @@
  * #################################################################################################################
  * Computer Graphics and Multimedia - UFSCar/Fall 2015
  * Prof. Murillo Rodrigo Petrucelli Homem
- * Student: Thales Eduardo Adair Menato - 407976
+ * Students:
+ *      Thales Eduardo Adair Menato     407976
+ *      Daniel Nobusada                 344443
  * #################################################################################################################
  * References:
  * http://math.msu.su/~vvb/2course/Borisenko/CppProjects/GWindow/xintro.html#vars
@@ -19,23 +21,24 @@ int main(int argc, char *argv[]) {
 
     struct BufferDevice *device;
     struct Palette *palette;
+    struct Window *window1;
 
-    device = createBuffer(1024, 768);
-    palette = createPalette(3);
+    device = createBuffer(640, 480);
 
-    if (XInit(device) == True) {
+    palette = createPalette(2);
+    SetColor(0, 0, 0, palette);
+    SetColor(0, 1, 0, palette);
 
-        struct Window *window1 = createWindow(0, 1024, 0, 768);
+    window1 = createWindow(-10, 10, -10, 10);
 
-        struct Point2D p1 = {10, 20};
-        struct Point2D p2 = {250, 250};
+    struct Point2D *p1, *p2;
 
-        drawLine(&p1, &p2, window1, device, 255);
+    p1 = setPoint(-5, -5, 1);
+    p2 = setPoint(5, 5, 1);
 
-        XDump(ximage, device, palette);
+    drawLine(p1, p2, window1, device, 1);
 
-        XClose();
-    }
+    XDump(device, palette);
 
     return 0;
 }

@@ -1,15 +1,35 @@
+/** @file base_function.c
+ *  @brief Base Functions for the library.
+ *
+ *  @author Thales Menato (thamenato)
+ *  @author Daniel Nobusada (nobusada)
+ *
+ */
+
 #include "../header/structs.h"
 #include "../header/base_functions.h"
 
-// Initialize the X
-int XInit(struct BufferDevice * device){
-    // define the height and width based on BufferDevice
-    height = device->ymax;
+/*
+ * Creates a virtual device and displays the BufferDevice content on it.
+ */
+int XDump(struct BufferDevice *device, struct Palette *palette) {
+
+    Display *display;
+    XImage *ximage;
+    Window window;
+    XEvent an_event;
+    GC gc;
+    Visual *visual;
+    XGCValues values;
+    int m, n, screen, dplanes;
+    int width, height;
+    struct Color *color;
+
     width = device->xmax;
-    ret = True;
+    height = device->ymax;
 
     if ((display = XOpenDisplay(NULL)) == NULL)
-        ret = False;
+        return False;
     else {
         screen = DefaultScreen(display);
         dplanes = DisplayPlanes(display, screen);
@@ -17,72 +37,59 @@ int XInit(struct BufferDevice * device){
 
         if (!(window = XCreateSimpleWindow(display, RootWindow(display, screen), 0, 0, width, height, 1,
                                            BlackPixel(display, screen), WhitePixel(display, screen))))
-            ret = False;
+            return False;
         else {
             XSelectInput(display, window, EventMask);
-            XStoreName(display, window, "Monitor Cthulhu ^(;.;)^");
+            XStoreName(display, window, "Monitor Virtual");
             gc = XCreateGC(display, window, 0, &values);
 
             XMapWindow(display, window);
             XSync(display, False);
 
-            // ximage is what will be shown (where you should write your buffer)
-            ximage = XCreateImage(display, visual, dplanes, ZPixmap, 0, malloc(width * height * sizeof(int)), width,
-                                  height, 8, 0);
-        }
-    }
-    return ret;
-}
+            ximage = XCreateImage(display, visual, dplanes, ZPixmap, 0,
+                                  malloc(width * height * sizeof(int)), width, height, 8, 0);
 
-// Display with XImage as content
-void XShow(){
-    char text[255];
-    do {
-        XNextEvent(display, &an_event);
-        switch (an_event.type) {
-            case Expose:
-                XPutImage(display, window, gc, ximage, 0, 0, 0, 0, width, height);
-                break;
-            case KeyPress:
-                if (XLookupString(&an_event.xkey, text, 255, &key, 0) == 1) {
-
+            for (m = 0; m < height; m++) {
+                for (n = 0; n < width; n++) {
+                    color = GetColor(device->buffer[m * width + n], palette);
+                    ximage->data[(m * 4) * width + n * 4] = (char) round((color->blue) * 255);
+                    ximage->data[(m * 4) * width + n * 4 + 1] = (char) round((color->green) * 255);
+                    ximage->data[(m * 4) * width + n * 4 + 2] = (char) round((color->red) * 255);
+                    ximage->data[(m * 4) * width + n * 4 + 3] = (char) 0;
                 }
-                break;
-        }
-    } while (text[0] != 27); // ESCAPE to exit the loop
-}
+            }
 
-// Close the display and free the memory
-void XClose(){
-    XFreeGC(display, gc);
-    XDestroyWindow(display, window);
-    XCloseDisplay(display);
-}
+            XPutImage(display, window, gc, ximage, 0, 0, 0, 0, width, height);
 
-// Puts the BufferDevice content to XImage
-void XDump(XImage *ximage, struct BufferDevice *device, struct Palette *palette) {
+            KeySym key;
+            char text[255];
+            do {
+                XNextEvent(display, &an_event);
+                switch (an_event.type) {
+                    case Expose:
+                        XPutImage(display, window, gc, ximage, 0, 0, 0, 0, width, height);
+                        break;
+                    case KeyPress:
+                        if (XLookupString(&an_event.xkey, text, 255, &key, 0) == 1) {
 
-    int     m, n,
-            height = device->ymax,
-            width = device->xmax;
-    struct Color *color;
+                        }
+                        break;
+                }
+            } while (text[0] != 27); // ESCAPE to exit the loop
 
-    for(m = 0; m < height; m++) {
-        for(n = 0; n < width; n++) {
-            color = GetColor(device->buffer[m*width+n], palette);
-            ximage->data[(m*4)*width+n*4] = (char) round((color->blue)*255);
-            ximage->data[(m*4)*width+n*4+1] = (char) round((color->green)*255);
-            ximage->data[(m*4)*width+n*4+2] = (char) round((color->red)*255);
-            ximage->data[(m*4)*width+n*4+3] = (char) 0;
+            XFreeGC(display, gc);
+            XDestroyWindow(display, window);
+            XCloseDisplay(display);
         }
     }
-
-    XShow();
+    return True;
 }
 
-// Set the Universe boundaries
-struct Universe * setUniverse(float xmin, float xmax, float ymin, float ymax) {
-    struct Universe *universe = (struct Universe *) malloc(sizeof(struct Universe));
+/*
+ * Set the Universe values.
+ */
+struct Universe *setUniverse(float xmin, float xmax, float ymin, float ymax) {
+    struct Universe *universe = (struct Universe *) malloc(sizeof(struct Universe *));
 
     universe->xmin = xmin;
     universe->xmax = xmax;
@@ -92,12 +99,16 @@ struct Universe * setUniverse(float xmin, float xmax, float ymin, float ymax) {
     return universe;
 }
 
-struct BufferDevice * createBuffer(int xmax, int ymax){
-    struct BufferDevice *device = (struct BufferDevice *) malloc(sizeof(struct BufferDevice));
+/*
+ * Allocates the memory for BufferDevice based on parameters.
+ */
+struct BufferDevice *createBuffer(int xmax, int ymax) {
+    struct BufferDevice *device = (struct BufferDevice *) malloc(sizeof(struct BufferDevice *));
 
     device->xmax = xmax;
     device->ymax = ymax;
     device->buffer = (int *) malloc(sizeof(int) * xmax * ymax);
+
     /*
      * simulate the matrix using:
      *      int offset = i * cols + j; --> row-major ordering
@@ -107,8 +118,11 @@ struct BufferDevice * createBuffer(int xmax, int ymax){
     return device;
 }
 
-struct Window * createWindow(float xmin, float xmax, float ymin, float ymax){
-    struct Window *win = (struct Window *) malloc(sizeof(struct Window));
+/*
+ * Allocates the memory for Window and set parameters.
+ */
+struct Window *createWindow(float xmin, float xmax, float ymin, float ymax) {
+    struct Window *win = (struct Window *) malloc(sizeof(struct Window *));
 
     win->xmin = xmin;
     win->xmax = xmax;
@@ -118,19 +132,23 @@ struct Window * createWindow(float xmin, float xmax, float ymin, float ymax){
     return win;
 }
 
-// Sistema de Referencia do Universo para Sistema de Referencia Normalizado
-struct Point2D * sru2srn(struct Point2D *p, struct Window *win) {
-    struct Point2D *normP = (struct Point2D *) malloc(sizeof(struct Point2D));
+/*
+ * Normalizes Point2D from Universe to Window.
+ */
+struct Point2D *sru2srn(struct Point2D *p, struct Window *win) {
+    struct Point2D *normP = (struct Point2D *) malloc(sizeof(struct Point2D *));
 
-    normP->x = ( p->x - win->xmin ) / ( win->xmax - win->xmin );
-    normP->y = ( p->y - win->ymin ) / ( win->ymax - win->ymin );
+    normP->x = (p->x - win->xmin) / (win->xmax - win->xmin);
+    normP->y = (p->y - win->ymin) / (win->ymax - win->ymin);
 
     return normP;
 }
 
-// Sistema de Referencia Normalizado para Sistema de Referencia do Dispositivo
-struct Point2D * srn2srd(struct Point2D *normP, struct BufferDevice *device){
-    struct Point2D *deviceP = (struct Point2D *) malloc(sizeof(struct Point2D));
+/*
+ * Normalized Point2D to BufferDevice position.
+ */
+struct Point2D *srn2srd(struct Point2D *normP, struct BufferDevice *device) {
+    struct Point2D *deviceP = (struct Point2D *) malloc(sizeof(struct Point2D *));
 
     deviceP->x = round(normP->x * (device->xmax - 1));
     deviceP->y = round(normP->y * (device->ymax - 1));
@@ -138,9 +156,11 @@ struct Point2D * srn2srd(struct Point2D *normP, struct BufferDevice *device){
     return deviceP;
 }
 
-// Allocate the memory for Point2D, set the values and returns it
-struct Point2D * setPoint(float x, float y, int color) {
-    struct Point2D *point = (struct Point2D *) malloc(sizeof(struct Point2D));
+/*
+ * Allocates memory and set values for Point2D members.
+ */
+struct Point2D *setPoint(float x, float y, int color) {
+    struct Point2D *point = (struct Point2D *) malloc(sizeof(struct Point2D *));
 
     point->x = x;
     point->y = y;
@@ -149,31 +169,52 @@ struct Point2D * setPoint(float x, float y, int color) {
     return point;
 }
 
-// Create an object based on number of points and allocating those points
-struct Object2D * createObject(int numberOfPoints){
-    struct Object2D *object = (struct Object2D *) malloc(sizeof(struct Object2D));
+/*
+ * Creates an Object2D allocating it's memory based on number of points.
+ */
+struct Object2D *createObject(int numberOfPoints) {
+    struct Object2D *object = (struct Object2D *) malloc(sizeof(struct Object2D *));
 
     object->numberOfPoints = numberOfPoints;
-    object->points = (struct Point2D*) malloc(sizeof(struct Point2D) * numberOfPoints);
+    object->points = (struct Point2D *) malloc(sizeof(struct Point2D) * numberOfPoints);
 
     return object;
 }
 
-struct Palette * createPalette(int numberOfColors){
-    struct Palette *palette = (struct Palette *) malloc(sizeof(struct Palette));
+/*
+ * Create a Palette with parameter number of colors.
+ */
+struct Palette *createPalette(int numberOfColors) {
+    struct Palette *palette = (struct Palette *) malloc(sizeof(struct Palette *));
 
     palette->numberOfColors = numberOfColors;
+    palette->currentColor = 0;
     palette->colors = (struct Color *) malloc(sizeof(struct Color) * numberOfColors);
 
     return palette;
 }
 
-//TODO: Get Colors
-struct Color * GetColor(int point, struct Palette * palette){
-//
-//    color->red = 1.0;
-//    color->green = 1.0;
-//    color->blue = 1.0;
-//
-//    return palette->colors;
+/*
+ * Set a new color to a Palette.
+ */
+int SetColor(float red, float green, float blue, struct Palette *palette) {
+    if (palette->currentColor >= palette->numberOfColors)
+        return False;
+
+    palette->colors[palette->currentColor].red = red;
+    palette->colors[palette->currentColor].green = green;
+    palette->colors[palette->currentColor].blue = blue;
+
+    palette->currentColor++;
+
+    return True;
 }
+
+/*
+ * Get a Color from Palette.
+ */
+struct Color *GetColor(int colorNumber, struct Palette *palette) {
+
+    return &palette->colors[colorNumber];
+}
+

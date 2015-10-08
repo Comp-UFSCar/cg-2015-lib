@@ -39,6 +39,7 @@ struct Color {
 
 struct Palette {
     int numberOfColors;
+    int currentColor;
     struct Color * colors;
 };
 

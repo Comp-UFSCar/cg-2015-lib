@@ -1,7 +1,7 @@
 #include "../header/line.h"
 
-void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window * win,
-                      struct BufferDevice *device, int color){
+void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
+              struct BufferDevice *device, int color) {
 
     float a, b;
     int i, j, aux;
@@ -31,12 +31,12 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window * win,
         }
     }
     else {
-        a = (pd2->y - pd1->y)/(pd2->x - pd1->x);
-        b = pd1->y - a*pd1->x;
+        a = (pd2->y - pd1->y) / (pd2->x - pd1->x);
+        b = pd1->y - a * pd1->x;
         while (i < pd2->x) {
             device->buffer[(device->ymax - j - 1) * device->xmax + i] = color;
             aux = j;
-            j = round(a*(++i) + b);
+            j = round(a * (++i) + b);
 
             if (j > aux) {
                 while (aux < j) {
