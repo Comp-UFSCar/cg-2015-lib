@@ -1,11 +1,6 @@
 #ifndef MONITOR_CTHULHU_H
 #define MONITOR_CTHULHU_H
 
-#define MAXIMOX 640
-#define MAXIMOY 480
-#define TRUE 1
-#define FALSE 0
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,5 +10,8 @@
 #include "structs.h"
 
 #define EventMask (KeyPressMask | ExposureMask)
+
+// Global variables
+struct Universe universe;  // Define the Universe
 
 #endif //MONITOR_CTHULHU_H

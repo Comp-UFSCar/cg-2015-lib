@@ -2,11 +2,14 @@
 
 How to Compile/Execute
 ----------------------
+##### Before:
+Library **X11** and **CMake** are **required** to run this code so if you're using *Debian-based* (Linux Mint / Ubuntu) don't forget to:
+```bash 
+sudo apt-get install libX11-dev 
+sudo apt-get install cmake
+```
 
-Library **X11 is required** to run this code so if you're using *Debian-based* (Linux Mint / Ubuntu) don't forget to:
-` sudo apt-get install libX11-dev `
-
-
+##### Starting:
 ```bash
 # Clone the repository
 git clone https://github.com/thamenato/computer_graphics_ufscar2015.git
