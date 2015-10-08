@@ -26,7 +26,7 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
 
     if (pd1->x == pd2->x) {
         while (j < pd2->y) {
-            device->buffer[(device->ymax - j - 1) * device->xmax + i] = color;
+            device->buffer[device->ymax - j - 1][i] = color;
             j++;
         }
     }
@@ -34,19 +34,19 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
         a = (pd2->y - pd1->y) / (pd2->x - pd1->x);
         b = pd1->y - a * pd1->x;
         while (i < pd2->x) {
-            device->buffer[(device->ymax - j - 1) * device->xmax + i] = color;
+            device->buffer[device->ymax - j - 1][i] = color;
             aux = j;
             j = (int) round(a * (++i) + b);
 
             if (j > aux) {
                 while (aux < j) {
-                    device->buffer[(device->ymax - aux - 1) * device->xmax + i] = color;
+                    device->buffer[device->ymax - aux - 1][i] = color;
                     aux++;
                 }
             }
             if (j < aux) {
                 while (aux > j) {
-                    device->buffer[(device->ymax - aux - 1) * device->xmax + i] = color;
+                    device->buffer[device->ymax - aux - 1][i] = color;
                     aux--;
                 }
             }
@@ -61,6 +61,7 @@ struct Object2D *createCircle(float radius, int color) {
 
     sphere = createObject(36);
 
+    // http://www.mathopenref.com/coordcirclealgorithm.html
     th = 0.0;
     for (i = 0; i < 10; i++) {
         x = radius * cos(th);
@@ -79,4 +80,18 @@ struct Object2D *createCircle(float radius, int color) {
     }
 
     return sphere;
+}
+
+void plotCircle(struct Point2D *o, int r, struct BufferDevice *device, int color) {
+    int x = -r, y = 0, err = 2 - 2 * r; /* II. Quadrant */
+    do {
+
+        device->buffer[(int) o->x - x][(int) o->y + y] = color; /*   I. Quadrant */
+        device->buffer[(int) o->x - y][(int) o->y - x] = color; /*  II. Quadrant */
+        device->buffer[(int) o->x + x][(int) o->y - y] = color; /* III. Quadrant */
+        device->buffer[(int) o->x + y][(int) o->y + x] = color; /*  IV. Quadrant */
+        r = err;
+        if (r <= y) err += ++y * 2 + 1;           /* e_xy+e_y < 0 */
+        if (r > x || err > y) err += ++x * 2 + 1; /* e_xy+e_x > 0 or no 2nd y-step */
+    } while (x < 0);
 }

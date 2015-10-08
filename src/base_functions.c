@@ -8,6 +8,7 @@
 
 #include "../header/structs.h"
 #include "../header/base_functions.h"
+#include "../header/line.h"
 
 /*
  * Creates a virtual device and displays the BufferDevice content on it.
@@ -51,7 +52,7 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
 
             for (m = 0; m < height; m++) {
                 for (n = 0; n < width; n++) {
-                    color = getColor(device->buffer[m * width + n], palette);
+                    color = getColor(device->buffer[m][n], palette);
                     ximage->data[(m * 4) * width + n * 4] = (char) round((color->blue) * 255);
                     ximage->data[(m * 4) * width + n * 4 + 1] = (char) round((color->green) * 255);
                     ximage->data[(m * 4) * width + n * 4 + 2] = (char) round((color->red) * 255);
@@ -107,7 +108,10 @@ struct BufferDevice *createBuffer(int xmax, int ymax) {
 
     device->xmax = xmax;
     device->ymax = ymax;
-    device->buffer = (int *) malloc(sizeof(int) * xmax * ymax);
+
+    device->buffer = (int **)malloc(xmax * sizeof(int *));
+    for(int i = 0; i < xmax; i++)
+        device->buffer[i] = (int *)malloc(ymax * sizeof(int));
 
     /*
      * simulate the matrix using:
@@ -189,6 +193,19 @@ int setObject(struct Point2D *p, struct Object2D *obj) {
 
     obj->points[obj->curr_point] = *p;
     obj->curr_point++;
+    return True;
+}
+
+//TODO Documentacao do drawObject
+int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice *device) {
+    if (object->curr_point == 0)
+        return False;
+
+    for (int i = 0; i < object->curr_point; i++) {
+        drawLine(&object->points[i], &object->points[(i + 1) % object->curr_point], window, device,
+                 object->points[i].color);
+    }
+
     return True;
 }
 

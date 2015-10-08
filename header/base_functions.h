@@ -86,6 +86,9 @@ struct Object2D * createObject(int max_points);
 //TODO Documentacao do setObject
 int setObject(struct Point2D * p, struct Object2D * obj);
 
+//TODO Documentacao do drawObject
+int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice * device);
+
 /** @brief Create a Palette with parameter number of colors.
  *  @param numberOfColors The number of colors that this Palette will have.
  *  @return Memory address with allocated Palette.

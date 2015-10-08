@@ -70,26 +70,26 @@ typedef struct Buffer bufferdevice;
 void SetWorld(float, float, float, float);              //DONE
 point * SetPoint(float, float, int);                    //DONE
 object * CreateObject(int);                             //DONE
-object * CreateCircle(float,int);                       //TODO
-int SetObject(point *, object *);                       //TODO
+object * CreateCircle(float,int);                       //DOING
+int SetObject(point *, object *);                       //DOING
 object * ChangeColor(object *, int);                    //TODO
 palette * CreatePalette(int);                           //DONE
-int SetColor(float, float, float, palette *);           //TODO
-ColorValues * GetColor(int, palette *);                 //TODO
-bufferdevice * CreateBuffer(int, int);                  //TODO
-window * CreateWindow(float, float, float, float);      //TODO
-point * Sru2Srn(point *, window *);                     //TODO
-point * Srn2Srd(point *, bufferdevice *);               //TODO
+int SetColor(float, float, float, palette *);           //DONE
+ColorValues * GetColor(int, palette *);                 //DONE
+bufferdevice * CreateBuffer(int, int);                  //DONE
+window * CreateWindow(float, float, float, float);      //DONE
+point * Sru2Srn(point *, window *);                     //DONE
+point * Srn2Srd(point *, bufferdevice *);               //DONE
 int InWin(point *, window *);                           //TODO
 point * InterX(point *, point *, float);                //TODO
 point * InterY(point *, point *, float);                //TODO
-int DrawLine(point *, point *, window *, bufferdevice *, int);  //TODO
-int DrawObject(object *, window *, bufferdevice *);     //TODO
+int DrawLine(point *, point *, window *, bufferdevice *, int);  //DONE
+int DrawObject(object *, window *, bufferdevice *);     //DOING
 int Fill(object *, window *, bufferdevice *, int);      //TODO
 object * Rotate(object *, float);                       //TODO
 object * Translate(object *, float, float);             //TODO
 object * Scale(object *, float, float);                 //TODO
 ColorValues * RGB2HSV(ColorValues *);                   //TODO
 ColorValues * HSV2RGB(ColorValues *);                   //TODO
-int DumpX(bufferdevice *, palette *);                   //TODO
+int DumpX(bufferdevice *, palette *);                   //DONE
 

@@ -145,7 +145,7 @@ struct Palette {
  */
 struct BufferDevice {
     int xmax, ymax;
-    int *buffer;
+    int **buffer;
 };
 
 #endif

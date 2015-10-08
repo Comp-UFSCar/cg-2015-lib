@@ -37,5 +37,6 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
  *  @return Object2D with circle points.
  */
 struct Object2D *createCircle(float radius, int color);
+void plotCircle(struct Point2D *o, int r, struct BufferDevice *device, int color);
 
 #endif //LINE_H
