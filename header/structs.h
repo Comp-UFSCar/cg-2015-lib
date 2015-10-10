@@ -10,8 +10,8 @@
 
 #include "monitor_cthulhu.h"
 
-/* @def PI Approximation of PI with 10 decimal precision */
-#define PI 3.1415926535
+/* @def PI Approximation of PI */
+#define PI 3.14159265358979323846
 
 /** @struct Universe
  *  @brief Defines the Universe boundaries.

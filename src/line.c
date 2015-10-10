@@ -1,4 +1,5 @@
 #include "../header/line.h"
+#include <math.h>
 
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
               struct BufferDevice *device, int color) {
@@ -59,10 +60,12 @@ struct Object2D *createCircle(float radius, int color) {
     double x, y, th;
     int i;
 
-    sphere = createObject(36);
+    sphere = createObject(40);
 
     // http://www.mathopenref.com/coordcirclealgorithm.html
+
     th = 0.0;
+
     for (i = 0; i < 10; i++) {
         x = radius * cos(th);
         y = sqrt(radius * radius - x * x);
@@ -82,16 +85,20 @@ struct Object2D *createCircle(float radius, int color) {
     return sphere;
 }
 
-void plotCircle(struct Point2D *o, int r, struct BufferDevice *device, int color) {
-    int x = -r, y = 0, err = 2 - 2 * r; /* II. Quadrant */
-    do {
+struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int color) {
+    double x, y;
+    double theta = 0, h, k, step;
+    step = 2 * PI / steps;
+    h = o->x;
+    k = o->y;
+    struct Object2D *sphere;
+    sphere = createObject(steps);
 
-        device->buffer[(int) o->x - x][(int) o->y + y] = color; /*   I. Quadrant */
-        device->buffer[(int) o->x - y][(int) o->y - x] = color; /*  II. Quadrant */
-        device->buffer[(int) o->x + x][(int) o->y - y] = color; /* III. Quadrant */
-        device->buffer[(int) o->x + y][(int) o->y + x] = color; /*  IV. Quadrant */
-        r = err;
-        if (r <= y) err += ++y * 2 + 1;           /* e_xy+e_y < 0 */
-        if (r > x || err > y) err += ++x * 2 + 1; /* e_xy+e_x > 0 or no 2nd y-step */
-    } while (x < 0);
+    for(theta = 0; theta < 2 * PI; theta += step){
+        x = h + r * cos(theta);
+        y = k - r * sin(theta);
+        setObject(setPoint(x, y, color), sphere);
+    }
+
+    return sphere;
 }

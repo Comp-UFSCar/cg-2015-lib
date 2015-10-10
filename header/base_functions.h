@@ -89,6 +89,9 @@ int setObject(struct Point2D * p, struct Object2D * obj);
 //TODO Documentacao do drawObject
 int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice * device);
 
+//TODO Documentacao do changeColor
+struct Object2D *changeColor(struct Object2D *object, int color);
+
 /** @brief Create a Palette with parameter number of colors.
  *  @param numberOfColors The number of colors that this Palette will have.
  *  @return Memory address with allocated Palette.

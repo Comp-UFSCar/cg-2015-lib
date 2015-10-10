@@ -72,7 +72,7 @@ point * SetPoint(float, float, int);                    //DONE
 object * CreateObject(int);                             //DONE
 object * CreateCircle(float,int);                       //DOING
 int SetObject(point *, object *);                       //DOING
-object * ChangeColor(object *, int);                    //TODO
+object * ChangeColor(object *, int);                    //DOING
 palette * CreatePalette(int);                           //DONE
 int SetColor(float, float, float, palette *);           //DONE
 ColorValues * GetColor(int, palette *);                 //DONE

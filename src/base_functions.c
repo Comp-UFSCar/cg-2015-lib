@@ -209,6 +209,19 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
     return True;
 }
 
+//TODO documentacao do changeColor
+struct Object2D *changeColor(struct Object2D *object, int color){
+    struct Object2D *clone = createObject(object->max_points);
+
+    for(int i = 0; i < object->curr_point; i++)
+    {
+        clone->points[i] = object->points[i];
+        clone->points[i].color = color;
+    }
+
+    return clone;
+}
+
 /*
  * Create a Palette with parameter number of colors.
  */
