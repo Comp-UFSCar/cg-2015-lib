@@ -30,14 +30,13 @@
  */
 int XDump(struct BufferDevice * device, struct Palette * palette);
 
-/** @brief Set the Universe values.
+/** @brief Set the World values.
  *  @param xmin Minimum value for X.
  *  @param xmax Maximum value for X.
  *  @param ymin Minimum value for Y.
  *  @param ymax Maximum value for Y.
- *  @return Universe with the parameters values.
  */
-struct Universe * setUniverse(float xmin, float xmax, float ymin, float ymax);
+void setWorld(float xmin, float xmax, float ymin, float ymax);
 
 /** @brief Allocates the memory for BufferDevice based on parameters.
  *  @param xmax Maximum value for X, width of BufferDevice matrix.

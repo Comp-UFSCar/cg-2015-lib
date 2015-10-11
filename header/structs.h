@@ -13,21 +13,7 @@
 /* @def PI Approximation of PI */
 #define PI 3.14159265358979323846
 
-/** @struct Universe
- *  @brief Defines the Universe boundaries.
- *  @var Universe::xmin
- *  Member 'xmin' contains the minimum value of x.
- *  @var Universe::xmax
- *  Member 'xmax' contains the maximum value of x.
- *  @var Universe::ymin
- *  Member 'ymin' contains the minimum value of y.
- *  @var Universe::ymax
- *  Member 'ymax' contains the maximum value of y.
- */
-struct Universe {
-    float xmin, xmax,
-            ymin, ymax;
-};
+float world_xmin, world_xmax, world_ymin, world_ymax;
 
 /** @struct Window
  *  @brief Defines the Window boundaries.

@@ -1,21 +1,19 @@
-/*
- * #################################################################################################################
- * Computer Graphics and Multimedia - UFSCar/Fall 2015
- * Prof. Murillo Rodrigo Petrucelli Homem
- * Students:
+/** @file monitor_cthulhu.c
+ *  @brief main c file containing examples on how to use the lib.
+ *
+ *  Computer Graphics and Multimedia - UFSCar/Fall 2015
+ *
+ *                          Prof. Murillo Rodrigo Petrucelli Homem
+ *
+ *  Students:
  *      Thales Eduardo Adair Menato     407976
  *      Daniel Nobusada                 344443
- * #################################################################################################################
- * References:
- * http://math.msu.su/~vvb/2course/Borisenko/CppProjects/GWindow/xintro.html#vars
- * http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/048/4879/4879l1.html
- * #################################################################################################################
- * If you're compiling manually using gcc don't forget to add the flags: -lm -lX11 -std=c99
+ *
+ *  If you're compiling manually using gcc don't forget to add the flags:
+ *      -lm -lX11 -std=c99
  */
 
 #include "../header/monitor_cthulhu.h"
-#include "../header/base_functions.h"
-#include "../header/line.h"
 
 int main(int argc, char *argv[]) {
 

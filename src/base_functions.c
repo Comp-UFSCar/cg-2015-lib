@@ -87,17 +87,13 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
 }
 
 /*
- * Set the Universe values.
+ * Set the World values.
  */
-struct Universe *setUniverse(float xmin, float xmax, float ymin, float ymax) {
-    struct Universe *universe = (struct Universe *) malloc(sizeof(struct Universe *));
-
-    universe->xmin = xmin;
-    universe->xmax = xmax;
-    universe->ymin = ymin;
-    universe->ymax = ymax;
-
-    return universe;
+void setWorld(float xmin, float xmax, float ymin, float ymax) {
+    world_xmin = xmin;
+    world_xmax = xmax;
+    world_ymin = ymin;
+    world_ymax = ymax;
 }
 
 /*
