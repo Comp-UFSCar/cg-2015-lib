@@ -8,10 +8,9 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-#include "monitor_cthulhu.h"
-
 /* @def PI Approximation of PI */
 #define PI 3.14159265358979323846
+#define EventMask (KeyPressMask | ExposureMask)
 
 float world_xmin, world_xmax, world_ymin, world_ymax;
 

@@ -20,6 +20,5 @@
 #include "../header/base_functions.h"
 #include "../header/line.h"
 
-#define EventMask (KeyPressMask | ExposureMask)
 
 #endif //MONITOR_CTHULHU_H

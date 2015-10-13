@@ -1,5 +1,4 @@
 #include "../header/line.h"
-#include <math.h>
 
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
               struct BufferDevice *device, int color) {
