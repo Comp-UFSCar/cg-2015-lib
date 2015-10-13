@@ -25,6 +25,7 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
     j = (int) pd1->y;
 
     if (pd1->x == pd2->x) {
+        //TODO FIX ME PLOX
         while (j < pd2->y) {
             device->buffer[device->ymax - j - 1][i] = color;
             j++;
@@ -55,6 +56,7 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
 }
 
 struct Object2D *createCircle(float radius, int color) {
+    // This function does not go well with rectangular windows
     struct Object2D *sphere;
     double x, y, th;
     int i;

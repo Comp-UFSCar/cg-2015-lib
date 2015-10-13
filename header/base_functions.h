@@ -75,7 +75,7 @@ struct Point2D * srn2srd(struct Point2D * normP, struct BufferDevice * device);
  *  @return Memory address with Point2D using parameters values.
  */
 struct Point2D * setPoint(double x, double y, int color);
-
+// TODO: ou trocar essa funçãopara um createPoint que retorna o ponteiro de um Point2D, ou manter o setPoint que recebe um Point2D como parâmetro e retorna um int
 /** @brief Creates an Object2D allocating it's memory based on number of points.
  *  @param max_points Maximum of points that this object will have.
  *  @return Memory address with Object2D struct.
@@ -83,6 +83,7 @@ struct Point2D * setPoint(double x, double y, int color);
 struct Object2D * createObject(int max_points);
 
 //TODO Documentacao do setObject
+// TODO: refatorar essa função para um nome condizente, por exemplo, addPointToOBject
 int setObject(struct Point2D * p, struct Object2D * obj);
 
 //TODO Documentacao do drawObject
