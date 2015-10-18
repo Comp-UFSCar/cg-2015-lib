@@ -19,42 +19,34 @@ int main(int argc, char *argv[]) {
 
     struct BufferDevice *device;
     struct Palette *palette;
-    struct Window *window1, *window2;
+    struct Window *window1;
 
-    device = createBuffer(640, 480);
+    device = createBuffer(500, 500);
 
     palette = createPalette(3);
     setColor(0, 0, 0, palette);
     setColor(1, 1, 1, palette);
     setColor(1, 0, 0, palette);
 
-    window1 = createWindow(-10, -10, 0, 0);
-//    window2 = createWindow(-50, 50, -50, 50);
+    window1 = createWindow(-10, 10, -10, 10);
+
+//    drawObject(obj1, window1, device);
     struct Point2D *p1, *p2;
 
-    p1 = setPoint(-9, -8, 1);
-    p2 = setPoint(-7, -3, 1);
-
-    struct Object2D *obj1 = createObject(6);
-
-    setObject(setPoint(-9, -8, 1), obj1);
-    setObject(setPoint(-7, -3, 1), obj1);
-    setObject(setPoint(-4, -4, 1), obj1);
-    setObject(setPoint(-3, -6, 1), obj1);
-    setObject(setPoint(-6, -9, 1), obj1);
-
-    drawObject(obj1, window1, device);
+    struct Object2D *pol;
+//    p1 = setPoint(-50, -50, 1);
+//    p2 = setPoint(25, 25, 1);
 
 //    drawLine(p1, p2, window1, device, 1);
 
 
-//    struct Point2D *origin = setPoint(0, 0, 1);
-//    struct Object2D *circle, *circle2;
-//    circle = plotCircle(origin, 10, 50, 2);
-//    circle2 = createCircle(5.0, 1);
+    struct Point2D *origin = setPoint(-5, -5, 1);
+    struct Object2D *circle, *circle2;
+//    circle = plotCircle(origin, 1, 5, 2);
+    circle2 = createCircle(10, 1);
 
-//    drawObject(circle, window2, device);
-//    drawObject(circle2, window1, device);
+//    drawObject(circle, window1, device);
+    drawObject(circle2, window1, device);
 
 
     XDump(device, palette);

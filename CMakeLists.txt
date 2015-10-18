@@ -6,10 +6,14 @@ set(SOURCE_FILES
         src/monitor_cthulhu.c
         header/structs.h
         header/monitor_cthulhu.h
-        src/base_functions.c src/line.c header/line.h)
+        src/base_functions.c
+        src/line.c header/line.h)
+
+set(LIBS m X11)
 
 set(CMAKE_C_FLAGS "-std=c99")
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_executable(monitor_cthulhu ${SOURCE_FILES})
-target_link_libraries(monitor_cthulhu m X11)
+target_link_libraries(monitor_cthulhu ${LIBS})
