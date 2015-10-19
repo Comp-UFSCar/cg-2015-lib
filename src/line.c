@@ -1,5 +1,50 @@
 #include "../header/line.h"
 
+void plotLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
+              struct BufferDevice *device, int color){
+
+    // This uses the DDA algorithm
+
+    struct Point2D *pn1, *pd1, *pn2, *pd2;
+    float slope;
+    int startingX, actualY, nextY;
+
+    // This assures that P2's x coordinate is bigger than P1's x coordinate
+    if (p1->x <= p2->x){
+        pn1 = sru2srn(p1, win);
+        pd1 = srn2srd(pn1, device);
+        pn2 = sru2srn(p2, win);
+        pd2 = srn2srd(pn2, device);
+    }
+    else{
+        pn1 = sru2srn(p2, win);
+        pd1 = srn2srd(pn1, device);
+        pn2 = sru2srn(p1, win);
+        pd2 = srn2srd(pn2, device);
+    }
+
+    startingX = pd1->x;
+    actualY = pd1->y;
+    // The DDA algorithm uses the line's slope (angular coefficient)
+    slope = (pd2->y - pd1->y)/(pd2->x - pd1->x);
+    if (slope >= 1){
+        // Plotting loop
+        while (startingX < pd2->x){
+            nextY = actualY + round(slope);
+            device->buffer[startingX][device->ymax - nextY - 1] = color;
+            startingX ++;
+            actualY = nextY;
+        }
+    }
+    else if (slope < 1){
+            //parei aqui
+
+    }
+    else{ // slope == 1, meaning that the line is vertical
+
+    }
+}
+
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
               struct BufferDevice *device, int color) {
 
@@ -7,11 +52,14 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
     int i, j, aux;
     struct Point2D *pn1, *pd1, *pn2, *pd2;
 
+    /* Universe to Window conversion
+     * Followed by a Window do Device conversion*/
     pn1 = sru2srn(p1, win);
     pd1 = srn2srd(pn1, device);
     pn2 = sru2srn(p2, win);
     pd2 = srn2srd(pn2, device);
 
+    /* Assures that the second point's x coordinate is bigger than the first point's x coordinate*/
     if (pd1->x > pd2->x) {
         aux = (int) pd1->x;
         pd1->x = pd2->x;
@@ -25,7 +73,7 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
     j = (int) pd1->y;
 
     if (pd1->x == pd2->x) {
-        //TODO FIX ME PLOX
+        // TODO FIX ME PLOX
         while (j < pd2->y) {
             device->buffer[device->ymax - j - 1][i] = color;
             j++;

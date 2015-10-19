@@ -197,15 +197,16 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
     if (object->curr_point == 0)
         return False;
 
+    int fig=0;
+
     //printf("%d point\n", object->curr_point);
     for (int i = 0; i < object->curr_point; i++) {
         struct Point2D p0 = object->points[i];
         struct Point2D p1 = object->points[(i+1) % object->curr_point];
 
-        //printf("%.1f %.1f to %.1f %.1f\n", p0.x, p0.y, p1.x, p1.y);
-
-        drawLine(&p0, &p1, window, device,
-                 object->points[i].color);
+        printf("%d to %d\n%.1f %.1f to %.1f %.1f\n", fig, (fig+1)%object->curr_point, p0.x, p0.y, p1.x, p1.y);
+        fig++;
+        drawLine(&p0, &p1, window, device, object->points[i].color);
     }
 
     return True;
