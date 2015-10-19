@@ -2,7 +2,7 @@
  *
  * First Activity
  *
- * Student:
+ * Student: Thales Eduardo Adair Menato
  *
  * Instruction: to run this file, use command 'make' on this directory.
  */
@@ -11,7 +11,7 @@
 
 int main() {
 
-
+    
 
     return 0;
 
