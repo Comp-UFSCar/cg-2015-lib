@@ -15,6 +15,9 @@
 #include "structs.h"
 #include "base_functions.h"
 
+void plotLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
+struct BufferDevice *device, int color);
+
 /** @brief Draw a straight line given two points
  *
  *  Two points on space will be first normalized to the window,
