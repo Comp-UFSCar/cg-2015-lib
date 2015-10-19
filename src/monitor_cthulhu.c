@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     struct Palette *palette;
     struct Window *window1, *window2;
 
-    device = createBuffer(640, 640);
+    device = createBuffer(640, 480);
 
     palette = createPalette(3);
     setColor(0, 0, 0, palette);
@@ -51,7 +51,6 @@ int main(int argc, char *argv[]) {
 //    setObject(setPoint(-8, -8, 1), obj1);
 
     drawObject(obj1, window1, device);
-//    drawObject(obj1, window2, device);
 
 //    drawLine(p1, p2, window2, device, 1);
 
@@ -59,10 +58,10 @@ int main(int argc, char *argv[]) {
 //    struct Point2D *origin = setPoint(0, 0, 1);
 //    struct Object2D *circle, *circle2;
 //    circle = plotCircle(origin, 10, 50, 2);
-//    circle2 = createCircle(10.0, 1);
+//    circle2 = createCircle(0.2, 1);
 
 //    drawObject(circle, window2, device);
-//    drawObject(circle2, window2, device);
+//    drawObject(circle2, window1, device);
 
 
 //    for(int i=0; i<device->xmax; i++){

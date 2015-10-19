@@ -6,6 +6,7 @@
  *
  */
 
+#include <X11/Xutil.h>
 #include "../header/structs.h"
 #include "../header/base_functions.h"
 #include "../header/line.h"
