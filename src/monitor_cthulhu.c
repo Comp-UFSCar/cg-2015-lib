@@ -36,20 +36,19 @@ int main(int argc, char *argv[]) {
 //    p1 = setPoint(-9, -8, 1);
 //    p2 = setPoint(-7, -3, 1);
 
-//    struct Object2D *obj1 = createObject(5);
-//
-//    setObject(setPoint(-9, -8, 1), obj1);
-//    setObject(setPoint(-7, -3, 1), obj1);
-//    setObject(setPoint(-4, -4, 1), obj1);
-//    setObject(setPoint(-3, -6, 1), obj1);
-//    setObject(setPoint(-6, -9, 1), obj1);
+    struct Object2D *obj1 = createObject(6);
 
-    struct Object2D *obj1 = createObject(4);
-
-    setObject(setPoint(-5, -5, 1), obj1);
-    setObject(setPoint(-9, -3, 1), obj1);
+    setObject(setPoint(-9, -8, 1), obj1);
+    setObject(setPoint(-7, -3, 1), obj1);
     setObject(setPoint(-4, -4, 1), obj1);
-    setObject(setPoint(-3, -10, 1), obj1);
+    setObject(setPoint(-3, -6, 1), obj1);
+    setObject(setPoint(-6, -7, 1), obj1);
+    setObject(setPoint(-6, -9, 1), obj1);
+
+//    setObject(setPoint(-2, -8, 1), obj1);
+//    setObject(setPoint(-2, -2, 1), obj1);
+//    setObject(setPoint(-8, -2, 1), obj1);
+//    setObject(setPoint(-8, -8, 1), obj1);
 
     drawObject(obj1, window1, device);
 //    drawObject(obj1, window2, device);

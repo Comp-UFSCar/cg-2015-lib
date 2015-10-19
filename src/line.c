@@ -25,10 +25,19 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
     j = (int) pd1->y;
 
     if (pd1->x == pd2->x) {
-        //TODO FIX ME PLOX
-        while (j < pd2->y) {
-            device->buffer[device->ymax - j - 1][i] = color;
-            j++;
+        // fix to draw line from top-down
+        if(pd2->y < pd1->y){
+            while (j >= pd2->y) {
+                device->buffer[device->ymax - j - 1][i] = color;
+                j--;
+            }
+        }
+        // draw line from bottom-up
+        else{
+            while (j <= pd2->y) {   // '<=' fixes faulty pixel
+                device->buffer[device->ymax - j - 1][i] = color;
+                j++;
+            }
         }
     }
     else {
@@ -46,13 +55,17 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
                 }
             }
             if (j < aux) {
-                while (aux > j) {
+                while (aux >= j) {
                     device->buffer[device->ymax - aux - 1][i] = color;
                     aux--;
                 }
             }
         }
     }
+    free(pn1);
+    free(pn2);
+    free(pd1);
+    free(pd2);
 }
 
 struct Object2D *createCircle(float radius, int color) {
