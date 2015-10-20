@@ -106,9 +106,9 @@ struct BufferDevice *createBuffer(int xmax, int ymax) {
     device->xmax = xmax;
     device->ymax = ymax;
 
-    device->buffer = (int **)malloc(xmax * sizeof(int *));
-    for(int i = 0; i < xmax; i++)
-        device->buffer[i] = (int *)malloc(ymax * sizeof(int));
+    device->buffer = (int **)malloc(ymax * sizeof(int *));
+    for(int i = 0; i < ymax; i++)
+        device->buffer[i] = (int *)malloc(xmax * sizeof(int));
 
     /*
      * simulate the matrix using:
@@ -200,11 +200,11 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
 
     //printf("%d point\n", object->curr_point);
     for (int i = 0; i < object->curr_point; i++) {
-        printf("\np1 = (%f,%f), p2 = (%f,%f)",
-               object->points[i].x,
-               object->points[i].y,
-               object->points[(i+1) % object->curr_point].x,
-               object->points[(i+1) % object->curr_point].y);
+//        printf("\np1 = (%f,%f), p2 = (%f,%f)",
+//               object->points[i].x,
+//               object->points[i].y,
+//               object->points[(i+1) % object->curr_point].x,
+//               object->points[(i+1) % object->curr_point].y);
 
         drawLine(&object->points[i], &object->points[(i+1) % object->curr_point],
                  window, device, object->points[i].color);

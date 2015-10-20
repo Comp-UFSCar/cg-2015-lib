@@ -28,8 +28,7 @@ int main() {
     struct Palette *palette;
     struct Window *window;
 
-    // utilizando matriz quadrada pois retangular esta com problema
-    device = createBuffer(640, 640);
+    device = createBuffer(640, 480);
 
     // paleta com 3 cores
     palette = createPalette(3);
