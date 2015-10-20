@@ -6,6 +6,7 @@
  *
  */
 
+#include <X11/Xutil.h>
 #include "../header/structs.h"
 #include "../header/base_functions.h"
 #include "../header/line.h"
@@ -199,11 +200,11 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
 
     //printf("%d point\n", object->curr_point);
     for (int i = 0; i < object->curr_point; i++) {
-        printf("\np1 = (%f,%f), p2 = (%f,%f)",
-               object->points[i].x,
-               object->points[i].y,
-               object->points[(i+1) % object->curr_point].x,
-               object->points[(i+1) % object->curr_point].y);
+//        printf("\np1 = (%f,%f), p2 = (%f,%f)",
+//               object->points[i].x,
+//               object->points[i].y,
+//               object->points[(i+1) % object->curr_point].x,
+//               object->points[(i+1) % object->curr_point].y);
 
         drawLine(&object->points[i], &object->points[(i+1) % object->curr_point],
                  window, device, object->points[i].color);
