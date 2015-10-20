@@ -1,4 +1,4 @@
-#include "../header/line.h"
+#include "../header/object2d_functions.h"
 
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
               struct BufferDevice *device, int color) {
@@ -26,14 +26,14 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
 
     if (pd1->x == pd2->x) {
         // fix to draw line from top-down
-        if(pd2->y < pd1->y){
+        if (pd2->y < pd1->y) {
             while (j >= pd2->y) {
                 device->buffer[device->ymax - j - 1][i] = color;
                 j--;
             }
         }
-        // draw line from bottom-up
-        else{
+            // draw line from bottom-up
+        else {
             while (j <= pd2->y) {   // '<=' fixes faulty pixel
                 device->buffer[device->ymax - j - 1][i] = color;
                 j++;
@@ -68,37 +68,6 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
     free(pd2);
 }
 
-struct Object2D *createCircle(float radius, int color) {
-    // This function does not go well with rectangular windows
-    struct Object2D *sphere;
-    double x, y, th;
-    int i;
-
-    sphere = createObject(40);
-
-    // http://www.mathopenref.com/coordcirclealgorithm.html
-
-    th = 0.0;
-
-    for (i = 0; i < 10; i++) {
-        x = radius * cos(th);
-        y = sqrt(radius * radius - x * x);
-        setObject(setPoint(x, y, color), sphere);
-        th += (10.0 * PI) / 180;
-    }
-    for (i = 10 - 1; i >= 0; i--) {
-        setObject(setPoint((-1.0) * sphere->points[i].x, sphere->points[i].y, color), sphere);
-    }
-    for (i = 19 - 1; i >= 9; i--) {
-        setObject(setPoint(sphere->points[i].x, (-1.0) * sphere->points[i].y, color), sphere);
-    }
-    for (i = 28 - 1; i >= 18; i--) {
-        setObject(setPoint((-1.0) * sphere->points[i].x, sphere->points[i].y, color), sphere);
-    }
-
-    return sphere;
-}
-
 struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int color) {
     double x, y;
     double theta = 0, h, k, step;
@@ -108,11 +77,31 @@ struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int color) {
     struct Object2D *sphere;
     sphere = createObject(steps);
 
-    for(theta = 0; theta < 2 * PI; theta += step){
+    for (theta = 0; theta < 2 * PI; theta += step) {
         x = h + r * cos(theta);
         y = k - r * sin(theta);
         setObject(setPoint(x, y, color), sphere);
     }
 
     return sphere;
+}
+
+//TODO Documentacao do drawObject
+int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice *device) {
+    if (object->curr_point == 0)
+        return False;
+
+    //printf("%d point\n", object->curr_point);
+    for (int i = 0; i < object->curr_point; i++) {
+//        printf("\np1 = (%f,%f), p2 = (%f,%f)",
+//               object->points[i].x,
+//               object->points[i].y,
+//               object->points[(i+1) % object->curr_point].x,
+//               object->points[(i+1) % object->curr_point].y);
+
+        drawLine(&object->points[i], &object->points[(i + 1) % object->curr_point],
+                 window, device, object->points[i].color);
+    }
+
+    return True;
 }

@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
     struct BufferDevice *device;
     struct Palette *palette;
-    struct Window *window1;
+    struct Window *window1, *window2;
 
     device = createBuffer(640, 480);
 
@@ -29,11 +29,17 @@ int main(int argc, char *argv[]) {
     setColor(1, 0, 0, palette);
 
     window1 = createWindow(-10, 0, -10, 0);
-    struct Object2D *obj1 = createObject(6);
+    window2 = createWindow(-10, 10, -10, 10);
 
-    setObject(setPoint(-9, -9, 1), obj1);
-    setObject(setPoint(-5, -1, 1), obj1);
-    setObject(setPoint(-1, -9, 1), obj1);
+//    struct Object2D *obj1 = createObject(6);
+
+//    setObject(setPoint(-9, -9, 1), obj1);
+//    setObject(setPoint(-5, -1, 1), obj1);
+//    setObject(setPoint(-1, -9, 1), obj1);
+
+//    obj1 = createCircle(5, 1);
+
+    struct Object2D *obj1 = plotCircle(setPoint(-5,-5,1), 2, 30, 1);
 
     drawObject(obj1, window1, device);
 

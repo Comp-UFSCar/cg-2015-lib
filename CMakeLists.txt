@@ -7,7 +7,8 @@ set(SOURCE_FILES
         header/structs.h
         header/monitor_cthulhu.h
         src/base_functions.c
-        src/line.c header/line.h)
+        src/object2d_functions.c
+        header/object2d_functions.h)
 
 set(LIBS m X11)
 

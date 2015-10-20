@@ -6,10 +6,7 @@
  *
  */
 
-#include <X11/Xutil.h>
-#include "../header/structs.h"
 #include "../header/base_functions.h"
-#include "../header/line.h"
 
 /*
  * Creates a virtual device and displays the BufferDevice content on it.
@@ -106,9 +103,9 @@ struct BufferDevice *createBuffer(int xmax, int ymax) {
     device->xmax = xmax;
     device->ymax = ymax;
 
-    device->buffer = (int **)malloc(ymax * sizeof(int *));
-    for(int i = 0; i < ymax; i++)
-        device->buffer[i] = (int *)malloc(xmax * sizeof(int));
+    device->buffer = (int **) malloc(ymax * sizeof(int *));
+    for (int i = 0; i < ymax; i++)
+        device->buffer[i] = (int *) malloc(xmax * sizeof(int));
 
     /*
      * simulate the matrix using:
@@ -193,32 +190,12 @@ int setObject(struct Point2D *p, struct Object2D *obj) {
     return True;
 }
 
-//TODO Documentacao do drawObject
-int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice *device) {
-    if (object->curr_point == 0)
-        return False;
-
-    //printf("%d point\n", object->curr_point);
-    for (int i = 0; i < object->curr_point; i++) {
-//        printf("\np1 = (%f,%f), p2 = (%f,%f)",
-//               object->points[i].x,
-//               object->points[i].y,
-//               object->points[(i+1) % object->curr_point].x,
-//               object->points[(i+1) % object->curr_point].y);
-
-        drawLine(&object->points[i], &object->points[(i+1) % object->curr_point],
-                 window, device, object->points[i].color);
-    }
-
-    return True;
-}
 
 //TODO documentacao do changeColor
-struct Object2D *changeColor(struct Object2D *object, int color){
+struct Object2D *changeColor(struct Object2D *object, int color) {
     struct Object2D *clone = createObject(object->max_points);
 
-    for(int i = 0; i < object->curr_point; i++)
-    {
+    for (int i = 0; i < object->curr_point; i++) {
         clone->points[i] = object->points[i];
         clone->points[i].color = color;
     }

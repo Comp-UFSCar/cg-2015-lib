@@ -1,4 +1,4 @@
-/** @file line.h
+/** @file object2d_functions.h
  *  @brief Header for Line functions.
  *
  *  This contains functions that draw lines or circles.
@@ -14,9 +14,6 @@
 
 #include "structs.h"
 #include "base_functions.h"
-
-void plotLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
-struct BufferDevice *device, int color);
 
 /** @brief Draw a straight line given two points
  *
@@ -34,12 +31,16 @@ struct BufferDevice *device, int color);
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
               struct BufferDevice *device, int color);
 
-/** @brief Given the radius, defines the points that composes a circle.
+/** @brief Given the point of origin, radius, and how many steps, defines the points that composes a circle.
+ *  @param origin The origin point of the circle.
  *  @param radius Radius of the circle.
+ *  @param steps How many steps to be used, more means precision.
  *  @param color Color number that will be used based on a Palette.
  *  @return Object2D with circle points.
  */
-struct Object2D *createCircle(float radius, int color);
-struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int color);
+struct Object2D *plotCircle(struct Point2D *origin, int radius, int steps, int color);
+
+//TODO Documentacao do drawObject
+int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice *device);
 
 #endif //LINE_H

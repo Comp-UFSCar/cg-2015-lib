@@ -13,10 +13,14 @@
 #define FUNCTIONS_LIB_H
 
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "structs.h"
+#include "../header/structs.h"
+#include "../header/object2d_functions.h"
+
 
 /** @brief Creates a virtual device and displays the BufferDevice content on it.
  *
@@ -28,7 +32,7 @@
  *  @param palette Palette that shall be used to define colors.
  *  @return True if X11 starts properly, otherwise False.
  */
-int XDump(struct BufferDevice * device, struct Palette * palette);
+int XDump(struct BufferDevice *device, struct Palette *palette);
 
 /** @brief Set the World values.
  *  @param xmin Minimum value for X.
@@ -43,7 +47,7 @@ void setWorld(float xmin, float xmax, float ymin, float ymax);
  *  @param ymax Maximum value for Y, height of BufferDevice matrix.
  *  @return Memory address with BufferDevice using parameters values.
  */
-struct BufferDevice * createBuffer(int xmax, int ymax);
+struct BufferDevice *createBuffer(int xmax, int ymax);
 
 /** @brief Allocates the memory for Window and set parameters.
  *  @param xmin Minimum value for X, start point.
@@ -52,21 +56,21 @@ struct BufferDevice * createBuffer(int xmax, int ymax);
  *  @param ymax Maximum value for Y, end point.
  *  @return Memory address with Window using parameters values.
  */
-struct Window * createWindow(float xmin, float xmax, float ymin, float ymax);
+struct Window *createWindow(float xmin, float xmax, float ymin, float ymax);
 
 /** @brief Normalizes Point2D from Universe to Window.
  *  @param p Point2D to be normalized.
  *  @param win Window to be used as normalization parameter.
  *  @return Normalized Point2D.
  */
-struct Point2D * sru2srn(struct Point2D * p, struct Window * win);
+struct Point2D *sru2srn(struct Point2D *p, struct Window *win);
 
 /** @brief Normalized Point2D to BufferDevice position.
  *  @param normP The normalized Point2D to be used.
  *  @param device BufferDevice where the point will be set.
  *  @return Point2D position at the BufferDevice.
  */
-struct Point2D * srn2srd(struct Point2D * normP, struct BufferDevice * device);
+struct Point2D *srn2srd(struct Point2D *normP, struct BufferDevice *device);
 
 /** @brief Allocates memory and set values for Point2D members.
  *  @param x value of x.
@@ -74,20 +78,18 @@ struct Point2D * srn2srd(struct Point2D * normP, struct BufferDevice * device);
  *  @param the color number that will be used as reference on Palette.
  *  @return Memory address with Point2D using parameters values.
  */
-struct Point2D * setPoint(double x, double y, int color);
+struct Point2D *setPoint(double x, double y, int color);
 // TODO: ou trocar essa funçãopara um createPoint que retorna o ponteiro de um Point2D, ou manter o setPoint que recebe um Point2D como parâmetro e retorna um int
 /** @brief Creates an Object2D allocating it's memory based on number of points.
  *  @param max_points Maximum of points that this object will have.
  *  @return Memory address with Object2D struct.
  */
-struct Object2D * createObject(int max_points);
+struct Object2D *createObject(int max_points);
 
 //TODO Documentacao do setObject
 // TODO: refatorar essa função para um nome condizente, por exemplo, addPointToOBject
-int setObject(struct Point2D * p, struct Object2D * obj);
+int setObject(struct Point2D *p, struct Object2D *obj);
 
-//TODO Documentacao do drawObject
-int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice * device);
 
 //TODO Documentacao do changeColor
 struct Object2D *changeColor(struct Object2D *object, int color);
@@ -96,7 +98,7 @@ struct Object2D *changeColor(struct Object2D *object, int color);
  *  @param numberOfColors The number of colors that this Palette will have.
  *  @return Memory address with allocated Palette.
  */
-struct Palette * createPalette(int numberOfColors);
+struct Palette *createPalette(int numberOfColors);
 
 /** @brief Set a new color to a Palette.
  *
