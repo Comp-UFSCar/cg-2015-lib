@@ -106,9 +106,9 @@ struct BufferDevice *createBuffer(int xmax, int ymax) {
     device->xmax = xmax;
     device->ymax = ymax;
 
-    device->buffer = (int **)malloc(xmax * sizeof(int *));
-    for(int i = 0; i < xmax; i++)
-        device->buffer[i] = (int *)malloc(ymax * sizeof(int));
+    device->buffer = (int **)malloc(ymax * sizeof(int *));
+    for(int i = 0; i < ymax; i++)
+        device->buffer[i] = (int *)malloc(xmax * sizeof(int));
 
     /*
      * simulate the matrix using:
