@@ -105,3 +105,83 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
 
     return True;
 }
+
+/*
+ *  Translates object to a point
+ */
+void translateTo ( struct Object2D *object, struct Point2D *point ) {
+    translate( object, point->x, point->y );
+}
+
+/*
+ * Translates object by X and Y
+ */
+void translate ( struct Object2D *object, float x, float y ) {
+    int i;
+
+    for( i = 0; i < object->curr_point; i++ ) {
+        Point2D *p = object->points[i];
+
+        p->x += x;
+        p->y += y;
+    }
+}
+
+/*
+ * Rotates object by radians around an axis (Point 2D)
+ */
+void rotate ( struct Object2D *object, double radians, Point2D * axis ) {
+
+    int i;
+
+    float   rotateCos = cos(radian),
+            rotateSin = sin(radian);
+
+    translate( *object, axis->x, axis-y );
+
+    for( i = 0; i < object->curr_point; i++ ) {
+        Point2D *p = object->points[i];
+
+        p->x = rotateCos*p->x - rotateSin*p->y;
+        p->y = rotateCos*p->y + rotateSin*p->x;
+    }
+
+    translate( *object, -axis->x, -axis-y );
+}
+
+/*
+ * Rotates object by radians around an axis (x , y)
+ */
+void rotateXY ( struct Object2D *object, double radians, double x, double y ) {
+    Point2D point = setPoint( x, y, 0);
+
+    rotate( object, radians, point );
+}
+
+/*
+ * Scales object by X and Y
+ */
+void scale ( struct Object2D *object, double x, double y ) {
+    int i;
+
+    for( i = 0; i < object->curr_point; i++ ) {
+        Point2D *p = object->points[i];
+
+        p->x *= x;
+        p->y *= y;
+    }
+}
+
+/*
+ *  Skew object by X and Y
+ */
+void skew (struct Object2D *object, double x, double y ) {
+    int i;
+
+    for( i = 0; i < object->curr_point; i++ ) {
+        Point2D *p = object->points[i];
+
+        p->x += x * p->y;
+        p->y += y * p->x;
+    }
+}
