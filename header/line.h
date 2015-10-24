@@ -29,14 +29,14 @@ struct BufferDevice *device, int color);
  *  @param p2 Another point in space.
  *  @param win Window where this should be based on.
  *  @param device BufferDevice where this will be allocated.
- *  @param color Color number that will be used based on a Palette.
+ *  @param color RGBColor number that will be used based on a Palette.
  */
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
               struct BufferDevice *device, int color);
 
 /** @brief Given the radius, defines the points that composes a circle.
  *  @param radius Radius of the circle.
- *  @param color Color number that will be used based on a Palette.
+ *  @param color RGBColor number that will be used based on a Palette.
  *  @return Object2D with circle points.
  */
 struct Object2D *createCircle(float radius, int color);

@@ -25,7 +25,7 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
     XGCValues values;
     int m, n, screen, dplanes;
     int width, height;
-    struct Color *color;
+    struct RGBColor *color;
 
     width = device->xmax;
     height = device->ymax;
@@ -54,9 +54,9 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
             for (m = 0; m < height; m++) {
                 for (n = 0; n < width; n++) {
                     color = getColor(device->buffer[m][n], palette);
-                    ximage->data[(m * 4) * width + n * 4] = (char) round((color->blue) * 255);
-                    ximage->data[(m * 4) * width + n * 4 + 1] = (char) round((color->green) * 255);
-                    ximage->data[(m * 4) * width + n * 4 + 2] = (char) round((color->red) * 255);
+                    ximage->data[(m * 4) * width + n * 4] = (char) round((color->blue));
+                    ximage->data[(m * 4) * width + n * 4 + 1] = (char) round((color->green));
+                    ximage->data[(m * 4) * width + n * 4 + 2] = (char) round((color->red));
                     ximage->data[(m * 4) * width + n * 4 + 3] = (char) 0;
                 }
             }
@@ -106,9 +106,9 @@ struct BufferDevice *createBuffer(int xmax, int ymax) {
     device->xmax = xmax;
     device->ymax = ymax;
 
-    device->buffer = (int **)malloc(ymax * sizeof(int *));
-    for(int i = 0; i < ymax; i++)
-        device->buffer[i] = (int *)malloc(xmax * sizeof(int));
+    device->buffer = (int **) malloc(ymax * sizeof(int *));
+    for (int i = 0; i < ymax; i++)
+        device->buffer[i] = (int *) malloc(xmax * sizeof(int));
 
     /*
      * simulate the matrix using:
@@ -206,7 +206,7 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
 //               object->points[(i+1) % object->curr_point].x,
 //               object->points[(i+1) % object->curr_point].y);
 
-        drawLine(&object->points[i], &object->points[(i+1) % object->curr_point],
+        drawLine(&object->points[i], &object->points[(i + 1) % object->curr_point],
                  window, device, object->points[i].color);
     }
 
@@ -214,11 +214,10 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
 }
 
 //TODO documentacao do changeColor
-struct Object2D *changeColor(struct Object2D *object, int color){
+struct Object2D *changeColor(struct Object2D *object, int color) {
     struct Object2D *clone = createObject(object->max_points);
 
-    for(int i = 0; i < object->curr_point; i++)
-    {
+    for (int i = 0; i < object->curr_point; i++) {
         clone->points[i] = object->points[i];
         clone->points[i].color = color;
     }
@@ -234,7 +233,7 @@ struct Palette *createPalette(int numberOfColors) {
 
     palette->numberOfColors = numberOfColors;
     palette->currentColor = 0;
-    palette->colors = (struct Color *) malloc(sizeof(struct Color) * numberOfColors);
+    palette->colors = (struct RGBColor *) malloc(sizeof(struct RGBColor) * numberOfColors);
 
     return palette;
 }
@@ -256,10 +255,91 @@ int setColor(float red, float green, float blue, struct Palette *palette) {
 }
 
 /*
- * Get a Color from Palette.
+ * Get a RGBColor from Palette.
  */
-struct Color *getColor(int colorNumber, struct Palette *palette) {
+struct RGBColor *getColor(int colorNumber, struct Palette *palette) {
 
     return &palette->colors[colorNumber];
 }
 
+/*
+ * Based on https://gist.github.com/yoggy/8999625#file-rgb2hsv-cpp-L13
+ */
+struct HSVColor *rgb2hsv(struct RGBColor rgbColor) {
+
+    float   r = rgbColor.red / 255.0f,
+            g = rgbColor.green / 255.0f,
+            b = rgbColor.blue / 255.0f,
+            min, max, h, s, v;
+
+    struct HSVColor *hsvColor = (struct HSVColor *) malloc(sizeof(struct HSVColor));
+
+    max = fmaxf(r, fmaxf(g, b));
+    min = fminf(r, fminf(g, b));
+
+    v = max;
+
+    if (max == 0.0f) {
+        s = 0;
+        h = 0;
+    }
+    else if (max - min == 0.0f) {
+        s = 0;
+        h = 0;
+    }
+    else {
+        s = (max - min) / max;
+
+        if (max == r) {
+            h = 60 * ((g - b) / (max - min)) + 0;
+        }
+        else if (max == g) {
+            h = 60 * ((b - r) / (max - min)) + 120;
+        }
+        else {
+            h = 60 * ((r - g) / (max - min)) + 240;
+        }
+    }
+
+    if (h < 0) h += 360.0f;
+
+    hsvColor->hue = h/2;                // 0 - 180
+    hsvColor->saturation = s * 255;     // 0 - 255
+    hsvColor->value = v * 255;          // 0 - 255
+
+    return hsvColor;
+}
+
+/*
+ * Based on https://gist.github.com/yoggy/8999625#file-rgb2hsv-cpp-L55
+ */
+struct RGBColor *hsv2rgb(struct HSVColor hsvColor) {
+    struct RGBColor *rgbColor = (struct RGBColor *) malloc(sizeof(struct RGBColor));
+
+    float   h = hsvColor.hue * 2.0f,
+            s = hsvColor.saturation / 255.0f,
+            v = hsvColor.value / 255.0f;
+
+    float r, g, b;
+
+    int   hi = (int)(h / 60.0f) % 6;
+    float f  = (h / 60.0f) - hi;
+    float p  = v * (1.0f - s);
+    float q  = v * (1.0f - s * f);
+    float t  = v * (1.0f - s * (1.0f - f));
+
+    switch(hi) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+        default: r = 0, g = 0, b = 0; break;
+    }
+
+    rgbColor->red = r * 255;
+    rgbColor->green = g * 255;
+    rgbColor->blue = b * 255;
+    return rgbColor;
+}

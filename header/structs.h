@@ -53,7 +53,7 @@ struct ViewPort {
  *  @var Point2D::y
  *  Member 'y' contains the y position.
  *  @var Point2D::color
- *  Member 'color' contains Color reference number of a Palette.
+ *  Member 'color' contains RGBColor reference number of a Palette.
  */
 struct Point2D {
     double x, y;
@@ -75,30 +75,56 @@ struct Object2D {
     struct Point2D *points;
 };
 
-/** @struct Color
+/** @struct RGBColor
  *  @brief Defines a color, using RGB.
  *
- *  A Color is not accessed directly, it is added inside a Palette.
+ *  A RGBColor is not accessed directly, it is added inside a Palette.
  *
  *  @note The value of colors must be in range [0,1].
- *  @var Color::red
+ *  @var RGBColor::red
  *  Member 'red' is a float number in range [0,1].
- *  @var Color::green
+ *  @var RGBColor::green
  *  Member 'green' is a float number in range [0,1].
- *  @var Color::blue
+ *  @var RGBColor::blue
  *  Member 'blue' is a float number in range [0,1].
  */
-struct Color {
+struct RGBColor {
     float red,
             green,
             blue;
+};
+
+
+/** @struct HSVColor
+ *  @brief Defines a color, using HSV.
+ *
+ *  "HSL and HSV are the two most common cylindrical-coordinate representations of points in an RGB color model.
+ *  The two representations rearrange the geometry of RGB in an attempt to be more intuitive and perceptually
+ *  relevant than the cartesian (cube) representation. Developed in the 1970s for computer graphics applications,
+ *  HSL and HSV are used today in color pickers, in image editing software, and less commonly in image analysis
+ *  and computer vision." - Wikipedia (https://en.wikipedia.org/wiki/HSL_and_HSV)
+ *  TODO: finalizar documantacao
+ *  @note
+ *  @var HSVColor::hue
+ *
+ *  @note
+ *  @var HSVColor::saturation
+ *
+ *  @note
+ *  @var HSVColor::value
+ *
+ */
+struct HSVColor {
+    float hue,
+        saturation,
+        value;
 };
 
 /** @struct Palette
  *  @brief Defines a palette to be used.
  *
  *  A palette is a set of colors that will be accessed by their index.
- *  Use the function setColor to add new Color to palette.
+ *  Use the function setColor to add new RGBColor to palette.
  *  @see setColor
  *
  *  @var Palette::numberOfColors
@@ -106,12 +132,12 @@ struct Color {
  *  @var Palette::currentColor
  *  Member 'currentColor' is colors current index value.
  *  @var Palette::colors
- *  Member 'colors' is the Color array.
+ *  Member 'colors' is the RGBColor array.
  */
 struct Palette {
     int numberOfColors;
     int currentColor;
-    struct Color *colors;
+    struct RGBColor *colors;
 };
 
 /** @struct BufferDevice
