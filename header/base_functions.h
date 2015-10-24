@@ -102,21 +102,33 @@ struct Palette *createPalette(int numberOfColors);
 
 /** @brief Set a new color to a Palette.
  *
- *  Using float values in range [0,1] for each color (RGB), it tries to add a new
+ *  Using float values in range [0,255] for each color (RGB), it tries to add a new
  *  color to the palette.
  *
- *  @param red float value in range [0,1] for Red color.
- *  @param green float value in range [0,1] for Green color.
- *  @param blue float value in range [0,1] for Blue color.
+ *  @param red float value in range [0,255] for Red color.
+ *  @param green float value in range [0,255] for Green color.
+ *  @param blue float value in range [0,255] for Blue color.
  *  @return True if added to palette, False if palette was already full.
  */
 int setColor(float red, float green, float blue, struct Palette *palette);
 
-/** @brief Get a Color from Palette.
+/** @brief Get a RGBColor from Palette.
  *  @param colorNumber Index of color wanted.
  *  @param palette Palette that will be used.
- *  @return Color defined on palette.
+ *  @return RGBColor defined on palette.
  */
-struct Color *getColor(int colorNumber, struct Palette *palette);
+struct RGBColor *getColor(int colorNumber, struct Palette *palette);
+
+/** @brief Convert the color from RGB to HSV.
+ *  @param rgbColor the RGB color to be converted.
+ *  @return HSVColor equivalent to the RGB.
+ */
+struct HSVColor *rgb2hsv(struct RGBColor rgbColor);
+
+/** @brief Convert the color from HSV to RGB.
+ *  @param hsvColor the HSV color to be converted.
+ *  @return RGBColor equivalent to the HSV.
+ */
+struct RGBColor *hsv2rgb(struct HSVColor hsvColor);
 
 #endif

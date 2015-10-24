@@ -26,7 +26,7 @@
  *  @param p2 Another point in space.
  *  @param win Window where this should be based on.
  *  @param device BufferDevice where this will be allocated.
- *  @param color Color number that will be used based on a Palette.
+ *  @param color RGBColor number that will be used based on a Palette.
  */
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
               struct BufferDevice *device, int color);
@@ -34,6 +34,7 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
 /** @brief Given the point of origin, radius, and how many steps, defines the points that composes a circle.
  *  @param origin The origin point of the circle.
  *  @param radius Radius of the circle.
+ *  @param color RGBColor number that will be used based on a Palette.
  *  @param steps How many steps to be used, more means precision.
  *  @param color Color number that will be used based on a Palette.
  *  @return Object2D with circle points.

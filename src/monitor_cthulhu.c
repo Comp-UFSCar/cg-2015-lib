@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
 
     palette = createPalette(3);
     setColor(0, 0, 0, palette);
-    setColor(1, 1, 1, palette);
-    setColor(1, 0, 0, palette);
+    setColor(255, 255, 255, palette);
+    setColor(255, 0, 0, palette);
 
     window1 = createWindow(-10, 0, -10, 0);
     window2 = createWindow(-10, 10, -10, 10);
@@ -51,6 +51,23 @@ int main(int argc, char *argv[]) {
 //    }
 
     XDump(device, palette);
+
+    struct RGBColor *rgbColor = (struct RGBColor *) malloc(sizeof(struct RGBColor));
+
+    rgbColor->red = 0;
+    rgbColor->green = 0;
+    rgbColor->blue = 0;
+
+    printf("\nRGB: %f, %f, %f", rgbColor->red, rgbColor->green, rgbColor->blue);
+
+    struct HSVColor *hsvColor = rgb2hsv(*rgbColor);
+
+    printf("\nHSV: %f, %f, %f", hsvColor->hue, hsvColor->saturation, hsvColor->value);
+
+    rgbColor = hsv2rgb(*hsvColor);
+
+    printf("\nRGB: %f, %f, %f", rgbColor->red, rgbColor->green, rgbColor->blue);
+    printf("\nHSV: %f, %f, %f", hsvColor->hue, hsvColor->saturation, hsvColor->value);
 
     return 0;
 }
