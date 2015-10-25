@@ -43,4 +43,11 @@ struct Object2D *plotCircle(struct Point2D *origin, int radius, int steps, int c
 //TODO Documentacao do drawObject
 int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice *device);
 
+void translate ( struct Object2D *, double x, double y );
+void translateTo ( struct Object2D *object, struct Point2D *point );
+void rotate ( struct Object2D *object, double radians, struct Point2D * axis );
+void rotateXY ( struct Object2D *object, double radians, double x, double y );
+void scale ( struct Object2D *object, double x, double y, struct Point2D * axis );
+void skew (struct Object2D *object, double x, double y, struct Point2D * axis );
+struct Point2D* getCenter( struct Object2D *object );
 #endif //LINE_H
