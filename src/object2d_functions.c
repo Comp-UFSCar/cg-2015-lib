@@ -105,3 +105,125 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
 
     return True;
 }
+
+
+
+/*
+ * Translates object by X and Y
+ */
+void translate ( struct Object2D *object, double x, double y ) {
+    int i;
+
+    for( i = 0; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        p->x += x;
+        p->y += y;
+    }
+}
+
+/*
+ *  Translates object to a point
+ */
+void translateTo ( struct Object2D *object, struct Point2D *point ) {
+    translate( object, point->x, point->y );
+}
+
+/*
+ * Rotates object by radians around an axis (Point 2D)
+ */
+void rotate ( struct Object2D *object, double radians, struct Point2D * axis ) {
+
+    int i;
+
+    double   rotateCos = cos(radians),
+             rotateSin = sin(radians);
+
+    translate( object, -axis->x, -axis->y );
+
+    for( i = 0; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        p->x = rotateCos*p->x + rotateSin*p->y;
+        p->y = rotateCos*p->y - rotateSin*p->x;
+    }
+
+    translate( object, axis->x, axis->y );
+}
+
+/*
+ * Rotates object by radians around an axis (x , y)
+ */
+void rotateXY ( struct Object2D *object, double radians, double x, double y ) {
+    struct Point2D * point = setPoint( x, y, 0);
+
+    rotate( object, radians, point );
+}
+
+/*
+ * Scales object by X and Y
+ */
+void scale ( struct Object2D *object, double x, double y, struct Point2D * axis ) {
+    int i;
+
+    translate( object, -axis->x, -axis->y );
+
+    for( i = 0; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        p->x *= x;
+        p->y *= y;
+    }
+
+    translate( object, axis->x, axis->y );
+}
+
+/*
+ *  Skew object by X and Y
+ */
+void skew (struct Object2D *object, double x, double y, struct Point2D * axis ) {
+    int i;
+
+    translate( object, -axis->x, -axis->y );
+
+    for( i = 0; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        printf("%d %d %d", p->x, p->y, x, y);
+        p->x += x * p->y;
+        p->y += y * p->x;
+    }
+
+    translate( object, axis->x, axis->y );
+}
+
+struct Point2D* getCenter( struct Object2D *object ) {
+
+    int i;
+    double minX, minY, maxX, maxY;
+
+    maxX = minX = object->points[0].x;
+    maxY = minY = object->points[0].y;
+
+    for( i = 1; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        if( maxX < p->x ) {
+            maxX = p->x;
+        }
+
+        if( minX > p->y ) {
+            minX = p->y;
+        }
+
+        if( maxY < p->y ) {
+            maxY = p->y;
+        }
+
+        if( minY > p->y ) {
+            minY = p->y;
+        }
+    };
+
+    return setPoint( (minX + maxX)/2.0, (minY + maxY)/2, 1 );
+}
