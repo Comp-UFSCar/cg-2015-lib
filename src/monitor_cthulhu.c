@@ -42,11 +42,12 @@ int main(int argc, char *argv[]) {
     struct Object2D *obj1 = plotCircle(setPoint(-5,-5,1), 2, 30, 1);
 
     //translate(obj1, 5, 0);
-    scale(obj1, 0.5, 0.5, getCenter(obj1));
-    rotate(obj1, 3.14, getCenter(obj1));
+    scale(obj1, 0.1, 0.1, getCenter(obj1));
+    //rotate(obj1, 3.14, getCenter(obj1));
     //skew(obj1, 0.5, 0.5, getCenter(obj1));
 
-    drawObject(obj1, window1, device);
+    //drawObject(obj1, window1, device);
+    scanFill(obj1, window1, device);
 
 //    for(int i=0; i<device->xmax; i++){
 //        for (int j=0; j<device->ymax; j++) {

@@ -51,4 +51,7 @@ void rotateXY ( struct Object2D *object, double radians, double x, double y );
 void scale ( struct Object2D *object, double x, double y, struct Point2D * axis );
 void skew (struct Object2D *object, double x, double y, struct Point2D * axis );
 struct Point2D* getCenter( struct Object2D *object );
+double getWidth( struct Object2D *object );
+double getHeight( struct Object2D *object );
+double getMinY( struct Object2D *object );
 #endif //LINE_H

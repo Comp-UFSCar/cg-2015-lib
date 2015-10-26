@@ -227,3 +227,69 @@ struct Point2D* getCenter( struct Object2D *object ) {
 
     return setPoint( (minX + maxX)/2.0, (minY + maxY)/2, 1 );
 }
+
+double getWidth( struct Object2D *object ) {
+
+    int i;
+    double minX, maxX;
+
+    maxX = minX = object->points[0].x;
+
+    for( i = 1; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        if( maxX < p->x ) {
+            maxX = p->x;
+        }
+
+        if( minX > p->y ) {
+            minX = p->y;
+        }
+
+    };
+
+    return maxX - minX;
+
+}
+
+double getHeight( struct Object2D *object ) {
+
+    int i;
+    double minY, maxY;
+
+    maxY = minY = object->points[0].y;
+
+    for( i = 1; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        if( maxY < p->y ) {
+            maxY = p->y;
+        }
+
+        if( minY > p->y ) {
+            minY = p->y;
+        }
+    };
+
+    return maxY - minY;
+}
+
+double getMinY( struct Object2D *object ) {
+
+    int i;
+    double minY;
+
+    minY = object->points[0].y;
+
+    for( i = 1; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        if( minY > p->y ) {
+            minY = p->y;
+        }
+    };
+
+    return minY;
+}
+
+
