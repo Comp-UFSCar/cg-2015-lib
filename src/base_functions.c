@@ -216,16 +216,53 @@ struct Palette *createPalette(int numberOfColors) {
     return palette;
 }
 
+struct RGBColor newRGBColor(float red, float green, float blue) {
+    struct RGBColor rgbColor;
+
+    rgbColor.red = red;
+    rgbColor.green = green;
+    rgbColor.blue = blue;
+
+    return rgbColor;
+}
+
+struct HSVColor newHSVColor(float hue, float saturation, float value) {
+    struct HSVColor hsvColor;
+
+    hsvColor.hue = hue;
+    hsvColor.saturation = saturation;
+    hsvColor.value = value;
+
+    return hsvColor;
+}
+
 /*
- * Set a new color to a Palette.
+ * Add HSV Color to Palette.
  */
-int setColor(float red, float green, float blue, struct Palette *palette) {
+int addHSVColorToPalette(struct HSVColor hsvColor, struct Palette *palette){
     if (palette->currentColor >= palette->numberOfColors)
         return False;
 
-    palette->colors[palette->currentColor].red = red;
-    palette->colors[palette->currentColor].green = green;
-    palette->colors[palette->currentColor].blue = blue;
+    struct RGBColor *rgbColor = hsv2rgb(hsvColor);
+    palette->colors[palette->currentColor].red = rgbColor->red;
+    palette->colors[palette->currentColor].green = rgbColor->green;
+    palette->colors[palette->currentColor].blue = rgbColor->blue;
+
+    palette->currentColor++;
+
+    return True;
+}
+
+/*
+ * Set a new color to a Palette.
+ */
+int addRGBColorToPalette(struct RGBColor rgbColor, struct Palette *palette) {
+    if (palette->currentColor >= palette->numberOfColors)
+        return False;
+
+    palette->colors[palette->currentColor].red = rgbColor.red;
+    palette->colors[palette->currentColor].green = rgbColor.green;
+    palette->colors[palette->currentColor].blue = rgbColor.blue;
 
     palette->currentColor++;
 
@@ -238,6 +275,13 @@ int setColor(float red, float green, float blue, struct Palette *palette) {
 struct RGBColor *getColor(int colorNumber, struct Palette *palette) {
 
     return &palette->colors[colorNumber];
+}
+
+/*
+ * Change object Color
+ */
+void changeObject2DColor(struct Object2D *obj, struct RGBColor cthulhu) {
+
 }
 
 /*
@@ -320,4 +364,9 @@ struct RGBColor *hsv2rgb(struct HSVColor hsvColor) {
     rgbColor->green = g * 255;
     rgbColor->blue = b * 255;
     return rgbColor;
+}
+
+void setObject2DColor(struct Object2D *obj, int color){
+    for(int i = 0; i < obj->curr_point; i++)
+        obj->points[i].color = color;
 }

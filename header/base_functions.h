@@ -100,6 +100,15 @@ struct Object2D *changeColor(struct Object2D *object, int color);
  */
 struct Palette *createPalette(int numberOfColors);
 
+//TODO Documentacao newRGBColor
+struct RGBColor newRGBColor(float red, float green, float blue);
+
+//TODO Documentacao newHSVColor
+struct HSVColor newHSVColor(float hue, float saturation, float value);
+
+//TODO Documentacao HSVColorToPalette
+int addHSVColorToPalette(struct HSVColor hsvColor, struct Palette *palette);
+
 /** @brief Set a new color to a Palette.
  *
  *  Using float values in range [0,255] for each color (RGB), it tries to add a new
@@ -110,7 +119,7 @@ struct Palette *createPalette(int numberOfColors);
  *  @param blue float value in range [0,255] for Blue color.
  *  @return True if added to palette, False if palette was already full.
  */
-int setColor(float red, float green, float blue, struct Palette *palette);
+int addRGBColorToPalette(struct RGBColor rgbColor, struct Palette *palette);
 
 /** @brief Get a RGBColor from Palette.
  *  @param colorNumber Index of color wanted.
@@ -130,5 +139,8 @@ struct HSVColor *rgb2hsv(struct RGBColor rgbColor);
  *  @return RGBColor equivalent to the HSV.
  */
 struct RGBColor *hsv2rgb(struct HSVColor hsvColor);
+
+//TODO Documentacao setObject2DColor
+void setObject2DColor(struct Object2D *obj, int color);
 
 #endif

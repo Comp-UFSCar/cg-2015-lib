@@ -125,7 +125,7 @@ struct HSVColor {
  *
  *  A palette is a set of colors that will be accessed by their index.
  *  Use the function setColor to add new RGBColor to palette.
- *  @see setColor
+ *  @see addRGBColorToPalette
  *
  *  @var Palette::numberOfColors
  *  Member 'numberOfColors' defines the maximum number for this palette.
