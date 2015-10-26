@@ -159,4 +159,9 @@ struct BufferDevice {
     int **buffer;
 };
 
+struct Matrix3x3 {
+// based on http://read.pudn.com/downloads78/sourcecode/windows/opengl/299233/transformObject2.c__.htm
+    float mat[3][3];
+};
+
 #endif

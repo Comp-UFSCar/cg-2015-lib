@@ -106,15 +106,13 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
     return True;
 }
 
-
-
 /*
  * Translates object by X and Y
  */
-void translate ( struct Object2D *object, double x, double y ) {
+void translate(struct Object2D *object, double x, double y) {
     int i;
 
-    for( i = 0; i < object->curr_point; i++ ) {
+    for (i = 0; i < object->curr_point; i++) {
         struct Point2D *p = &object->points[i];
 
         p->x += x;
@@ -125,68 +123,68 @@ void translate ( struct Object2D *object, double x, double y ) {
 /*
  *  Translates object to a point
  */
-void translateTo ( struct Object2D *object, struct Point2D *point ) {
-    translate( object, point->x, point->y );
+void translateTo(struct Object2D *object, struct Point2D *point) {
+    translate(object, point->x, point->y);
 }
 
 /*
  * Rotates object by radians around an axis (Point 2D)
  */
-void rotate ( struct Object2D *object, double radians, struct Point2D * axis ) {
+void rotate(struct Object2D *object, double radians, struct Point2D *axis) {
 
     int i;
 
-    double   rotateCos = cos(radians),
-             rotateSin = sin(radians);
+    double rotateCos = cos(radians),
+            rotateSin = sin(radians);
 
-    translate( object, -axis->x, -axis->y );
+    translate(object, -axis->x, -axis->y);
 
-    for( i = 0; i < object->curr_point; i++ ) {
+    for (i = 0; i < object->curr_point; i++) {
         struct Point2D *p = &object->points[i];
 
-        p->x = rotateCos*p->x + rotateSin*p->y;
-        p->y = rotateCos*p->y - rotateSin*p->x;
+        p->x = rotateCos * p->x + rotateSin * p->y;
+        p->y = rotateCos * p->y - rotateSin * p->x;
     }
 
-    translate( object, axis->x, axis->y );
+    translate(object, axis->x, axis->y);
 }
 
 /*
  * Rotates object by radians around an axis (x , y)
  */
-void rotateXY ( struct Object2D *object, double radians, double x, double y ) {
-    struct Point2D * point = setPoint( x, y, 0);
+void rotateXY(struct Object2D *object, double radians, double x, double y) {
+    struct Point2D *point = setPoint(x, y, 0);
 
-    rotate( object, radians, point );
+    rotate(object, radians, point);
 }
 
 /*
  * Scales object by X and Y
  */
-void scale ( struct Object2D *object, double x, double y, struct Point2D * axis ) {
+void scale(struct Object2D *object, double x, double y, struct Point2D *axis) {
     int i;
 
-    translate( object, -axis->x, -axis->y );
+    translate(object, -axis->x, -axis->y);
 
-    for( i = 0; i < object->curr_point; i++ ) {
+    for (i = 0; i < object->curr_point; i++) {
         struct Point2D *p = &object->points[i];
 
         p->x *= x;
         p->y *= y;
     }
 
-    translate( object, axis->x, axis->y );
+    translate(object, axis->x, axis->y);
 }
 
 /*
  *  Skew object by X and Y
  */
-void skew (struct Object2D *object, double x, double y, struct Point2D * axis ) {
+void skew(struct Object2D *object, double x, double y, struct Point2D *axis) {
     int i;
 
-    translate( object, -axis->x, -axis->y );
+    translate(object, -axis->x, -axis->y);
 
-    for( i = 0; i < object->curr_point; i++ ) {
+    for (i = 0; i < object->curr_point; i++) {
         struct Point2D *p = &object->points[i];
 
         printf("%d %d %d", p->x, p->y, x, y);
@@ -194,10 +192,10 @@ void skew (struct Object2D *object, double x, double y, struct Point2D * axis ) 
         p->y += y * p->x;
     }
 
-    translate( object, axis->x, axis->y );
+    translate(object, axis->x, axis->y);
 }
 
-struct Point2D* getCenter( struct Object2D *object ) {
+struct Point2D *getCenter(struct Object2D *object) {
 
     int i;
     double minX, minY, maxX, maxY;
@@ -205,25 +203,100 @@ struct Point2D* getCenter( struct Object2D *object ) {
     maxX = minX = object->points[0].x;
     maxY = minY = object->points[0].y;
 
-    for( i = 1; i < object->curr_point; i++ ) {
+    for (i = 1; i < object->curr_point; i++) {
         struct Point2D *p = &object->points[i];
 
-        if( maxX < p->x ) {
+        if (maxX < p->x) {
             maxX = p->x;
         }
 
-        if( minX > p->y ) {
+        if (minX > p->y) {
             minX = p->y;
         }
 
-        if( maxY < p->y ) {
+        if (maxY < p->y) {
             maxY = p->y;
         }
 
-        if( minY > p->y ) {
+        if (minY > p->y) {
             minY = p->y;
         }
     };
 
-    return setPoint( (minX + maxX)/2.0, (minY + maxY)/2, 1 );
+    return setPoint((minX + maxX) / 2.0, (minY + maxY) / 2, 1);
+}
+
+struct Matrix3x3 *matrix3x3Identity() {
+    struct Matrix3x3 *identity = malloc(sizeof(struct Matrix3x3));
+
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            identity->mat[i][j] = (i == j);
+
+    return identity;
+}
+
+struct Matrix3x3 *matrix3x3Multiply(struct Matrix3x3 a, struct Matrix3x3 b) {
+    struct Matrix3x3 *mult = malloc(sizeof(struct Matrix3x3));
+
+    for (int row = 0; row < 3; row++)
+        for (int col = 0; col < 3; col++)
+            mult->mat[row][col] = a.mat[row][0] * b.mat[0][col] +
+                              a.mat[row][1] * b.mat[1][col] +
+                              a.mat[row][2] * b.mat[2][col];
+
+    return mult;
+}
+
+struct Matrix3x3 *matrix3x3Translate(float tx, float ty, struct Matrix3x3 mat) {
+    struct Matrix3x3 *translate = matrix3x3Identity();
+
+    translate->mat[0][2] = tx;
+    translate->mat[1][2] = ty;
+
+    return matrix3x3Multiply(*translate, mat);
+}
+
+struct Matrix3x3 *matrix3x3Scale(float sx, float sy, struct Point2D axis, struct Matrix3x3 mat) {
+    struct Matrix3x3 *scale = matrix3x3Identity();
+
+    scale->mat[0][0] = sx;
+    scale->mat[0][2] = (1 - sx) * (float) axis.x;
+    scale->mat[1][1] = sy;
+    scale->mat[1][2] = (1 - sy) * (float) axis.y;
+
+    return matrix3x3Multiply(*scale, mat);
+}
+
+struct Matrix3x3 *matrix3x3RotateRadians(float radian, struct Point2D axis, struct Matrix3x3 mat) {
+    struct Matrix3x3 *rotate = matrix3x3Identity();
+
+    rotate->mat[0][0] = cosf(radian);
+    rotate->mat[0][1] = -sinf(radian);
+    rotate->mat[0][2] = (float) axis.x * (1 - cosf(radian)) + (float) axis.y * sinf(radian);
+    rotate->mat[1][0] = sinf(radian);
+    rotate->mat[1][1] = cosf(radian);
+    rotate->mat[1][2] = (float)axis.y * (1 - cosf(radian)) - (float)axis.y * sinf(radian);
+
+    return matrix3x3Multiply(*rotate, mat);
+}
+
+struct Matrix3x3 *matrix3x3RotateDegrees(float degree, struct Point2D axis, struct Matrix3x3 mat) {
+    float radian = (float)(PI / 180.0) * degree;
+
+    return matrix3x3RotateRadians(radian, axis, mat);
+}
+
+void matrix3x3TransformPoints(struct Object2D *object2D, struct Matrix3x3 transform) {
+    float temp;
+
+    for(int i = 0; i < object2D->curr_point; i++){
+        temp = (float)(transform.mat[0][0] * object2D->points[i].x +
+                transform.mat[0][1] * object2D->points[i].y +
+                transform.mat[0][2]);
+        object2D->points[i].y = transform.mat[1][0] * object2D->points[i].x +
+                transform.mat[1][1] * object2D->points[i].y + transform.mat[1][2];
+        object2D->points[i].x = temp;
+
+    }
 }

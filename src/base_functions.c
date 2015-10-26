@@ -281,7 +281,7 @@ struct HSVColor *rgb2hsv(struct RGBColor rgbColor) {
 
     if (h < 0) h += 360.0f;
 
-    hsvColor->hue = h/2;                // 0 - 180
+    hsvColor->hue = h;                // 0 - 360
     hsvColor->saturation = s * 255;     // 0 - 255
     hsvColor->value = v * 255;          // 0 - 255
 
@@ -294,7 +294,7 @@ struct HSVColor *rgb2hsv(struct RGBColor rgbColor) {
 struct RGBColor *hsv2rgb(struct HSVColor hsvColor) {
     struct RGBColor *rgbColor = (struct RGBColor *) malloc(sizeof(struct RGBColor));
 
-    float   h = hsvColor.hue * 2.0f,
+    float   h = hsvColor.hue,
             s = hsvColor.saturation / 255.0f,
             v = hsvColor.value / 255.0f;
 
