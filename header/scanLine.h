@@ -26,7 +26,7 @@ int yNext (int k, int cnt, struct Point2D * pts);
 void makeEdgeRec (struct Point2D lower, struct Point2D upper, int yComp, Edge * edge, Edge * edges[]);
 void buildEdgeList (int cnt, struct Point2D * pts, Edge * edges[]);
 void buildActiveList (int scan, Edge * active, Edge * edges[]);
-void fillScan (int scan, Edge * active, struct Window *window, struct BufferDevice *device);
+void fillScan (int scan, Edge * active, struct Window *window, struct BufferDevice *device, int color);
 void deleteAfter (Edge * q);
 void updateActiveList (int scan, Edge * active);
 void resortActiveList (Edge * active);

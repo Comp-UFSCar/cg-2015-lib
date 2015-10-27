@@ -94,7 +94,7 @@ void buildActiveList (int scan, Edge * active, Edge * edges[])
     }
 }
 
-void fillScan (int scan, Edge * active, struct Window *window, struct BufferDevice *device)
+void fillScan (int scan, Edge * active, struct Window *window, struct BufferDevice *device, int color)
 {
     Edge * p1, * p2;
     int i;
@@ -106,7 +106,7 @@ void fillScan (int scan, Edge * active, struct Window *window, struct BufferDevi
         p2 = p1->next;
         for (i= (int) p1->xIntersect; i<p2->xIntersect; i++) {
             //setPixel((int) i, scan);
-            device->buffer[j][i] = 1;
+            device->buffer[j][i] = color;
         }
         p1 = p2->next;
     }
@@ -155,6 +155,8 @@ void scanFill (struct Object2D * object, struct Window *window, struct BufferDev
     struct Point2D *pts = malloc(sizeof(object->points));
     struct Point2D *pn1, *pd1;
 
+    int cor = object->points[0].color;
+
     for (i = 0; i < object->curr_point; i++) {
         struct Point2D * p = &object->points[i];
 
@@ -182,7 +184,7 @@ void scanFill (struct Object2D * object, struct Window *window, struct BufferDev
     for (scan=0; scan<height; scan++) {
         buildActiveList (scan, active, edges);
         if (active->next) {
-            fillScan (scan, active, window, device);
+            fillScan (scan, active, window, device, cor);
             updateActiveList (scan, active);
             resortActiveList (active);
         }

@@ -102,9 +102,9 @@ int main(int argc, char *argv[]) {
     matrix3x3TransformPoints(obj2, *matTransf);
 
     drawObject(obj1, window1, device);
-    //scanFill(obj1, window1, device);
+    scanFill(obj1, window1, device);
     drawObject(obj2, window1, device);
-    //scanFill(obj2, window1, device);
+    scanFill(obj2, window1, device);
 
     XDump(device, palette);
 
