@@ -144,8 +144,12 @@ void rotate ( struct Object2D *object, double radians, struct Point2D * axis ) {
     for( i = 0; i < object->curr_point; i++ ) {
         struct Point2D *p = &object->points[i];
 
-        p->x = rotateCos*p->x - rotateSin*p->y;
-        p->y = rotateSin*p->x + rotateCos*p->y;
+        double  x = p->x,
+                y = p->y;
+
+
+        p->x = rotateCos*x - rotateSin*y;
+        p->y = rotateSin*x + rotateCos*y;
     }
 
     translate( object, axis->x, axis->y );
