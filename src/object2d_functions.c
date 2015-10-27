@@ -76,7 +76,7 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
     free(pd2);
 }
 
-struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int fillColor, int borderColor) {
+struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int borderColor, int fillColor) {
     double x, y;
     double theta = 0, h, k, step;
     step = 2 * PI / steps;

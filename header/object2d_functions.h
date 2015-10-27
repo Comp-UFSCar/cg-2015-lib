@@ -41,7 +41,7 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
  *  @param color Color number that will be used based on a Palette.
  *  @return Object2D with circle points.
  */
-struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int fillColor, int borderColor);
+struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int borderColor, int fillColor);
 
 //TODO Documentacao do drawObject
 int drawObject(struct Object2D *object, struct Window *window, struct BufferDevice *device);
