@@ -5,6 +5,8 @@
  *
  *  @author Thales Menato (thamenato)
  *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
+ *
  */
 
 #ifndef MONITOR_CTHULHU_H

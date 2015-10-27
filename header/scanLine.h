@@ -1,16 +1,18 @@
-//
-// Created by o on 10/26/15.
-//
-
+/** @file scanLine.h
+ *  @brief Header for scan line fill.
+ *
+ *  This file contains the scan line algorithm for filling a polygons.
+ *
+ *  @author Thales Menato (thamenato)
+ *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
+ *
+ */
 #ifndef MONITOR_CTHULHU_SCANLINE_H
 #define MONITOR_CTHULHU_SCANLINE_H
 
 #include "structs.h"
 #include "base_functions.h"
-
-//
-// Created by o on 10/26/15.
-//
 
 #include "../header/scanLine.h"
 

@@ -8,6 +8,7 @@
  *  Students:
  *      Thales Eduardo Adair Menato     407976
  *      Daniel Nobusada                 344443
+ *      Marcelo Lopes Lotufo            407933
  *
  *  If you're compiling manually using gcc don't forget to add the flags:
  *      -lm -lX11 -std=c99

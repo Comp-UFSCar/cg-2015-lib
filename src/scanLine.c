@@ -1,14 +1,13 @@
-//
-// Created by o on 10/26/15.
-//
+/** @file scanLine.c
+ *  @brief Scan line algorithm for filling a polygons.
+ *
+ *  @author Thales Menato (thamenato)
+ *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
+ *
+ */
 
 #include "../header/scanLine.h"
-
-//typedef struct tEdge {
-//    int yUpper;
-//    float xIntersect, dxPerScan;
-//    struct tEdge * next;
-//} Edge;
 
 /* Inserts edge into list in order of increasing xIntersect field. */
 void insertEdge (Edge * list, Edge * edge)

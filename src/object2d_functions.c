@@ -1,3 +1,11 @@
+/** @file object2d_functions.c
+ *  @brief Base object functions for the library.
+ *
+ *  @author Thales Menato (thamenato)
+ *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
+ *
+ */
 #include "../header/object2d_functions.h"
 
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
