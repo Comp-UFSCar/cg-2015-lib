@@ -158,12 +158,12 @@ struct Point2D *srn2srd(struct Point2D *normP, struct BufferDevice *device) {
 /*
  * Allocates memory and set values for Point2D members.
  */
-struct Point2D *setPoint(double x, double y, int color) {
+struct Point2D *setPoint(double x, double y) {
     struct Point2D *point = (struct Point2D *) malloc(sizeof(struct Point2D *));
 
     point->x = x;
     point->y = y;
-    point->color = color;
+    //point->color = color;
 
     return point;
 }
@@ -171,12 +171,14 @@ struct Point2D *setPoint(double x, double y, int color) {
 /*
  * Creates an Object2D allocating it's memory based on number of points.
  */
-struct Object2D *createObject(int max_points) {
+struct Object2D *createObject(int max_points, int borderColor, int fillColor) {
     struct Object2D *object = (struct Object2D *) malloc(sizeof(struct Object2D *));
 
     object->max_points = max_points;
     object->curr_point = 0;
     object->points = (struct Point2D *) malloc(sizeof(struct Point2D) * max_points);
+    object->borderColor = borderColor;
+    object->fillColor = fillColor;
 
     return object;
 }
@@ -194,11 +196,11 @@ int setObject(struct Point2D *p, struct Object2D *obj) {
 
 //TODO documentacao do changeColor
 struct Object2D *changeColor(struct Object2D *object, int color) {
-    struct Object2D *clone = createObject(object->max_points);
+    struct Object2D *clone = createObject(object->max_points, object->borderColor, object->fillColor);
 
     for (int i = 0; i < object->curr_point; i++) {
         clone->points[i] = object->points[i];
-        clone->points[i].color = color;
+        //clone->points[i].color = color;
     }
 
     return clone;
@@ -367,7 +369,7 @@ struct RGBColor *hsv2rgb(struct HSVColor hsvColor) {
     return rgbColor;
 }
 
-void setObject2DColor(struct Object2D *obj, int color){
-    for(int i = 0; i < obj->curr_point; i++)
-        obj->points[i].color = color;
+void setObject2DColor(struct Object2D *obj, int borderColor, int fillColor){
+    obj->borderColor = borderColor;
+    obj->fillColor = fillColor;
 }

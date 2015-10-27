@@ -79,13 +79,13 @@ struct Point2D *srn2srd(struct Point2D *normP, struct BufferDevice *device);
  *  @param the color number that will be used as reference on Palette.
  *  @return Memory address with Point2D using parameters values.
  */
-struct Point2D *setPoint(double x, double y, int color);
+struct Point2D *setPoint(double x, double y);
 // TODO: ou trocar essa funçãopara um createPoint que retorna o ponteiro de um Point2D, ou manter o setPoint que recebe um Point2D como parâmetro e retorna um int
 /** @brief Creates an Object2D allocating it's memory based on number of points.
  *  @param max_points Maximum of points that this object will have.
  *  @return Memory address with Object2D struct.
  */
-struct Object2D *createObject(int max_points);
+struct Object2D *createObject(int max_points, int borderColor, int fillColor);
 
 //TODO Documentacao do setObject
 // TODO: refatorar essa função para um nome condizente, por exemplo, addPointToOBject
@@ -142,6 +142,6 @@ struct HSVColor *rgb2hsv(struct RGBColor rgbColor);
 struct RGBColor *hsv2rgb(struct HSVColor hsvColor);
 
 //TODO Documentacao setObject2DColor
-void setObject2DColor(struct Object2D *obj, int color);
+void setObject2DColor(struct Object2D *obj, int borderColor, int fillColor);
 
 #endif

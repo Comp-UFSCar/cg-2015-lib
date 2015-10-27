@@ -154,7 +154,7 @@ void scanFill (struct Object2D * object, struct Window *window, struct BufferDev
     struct Point2D *pts = malloc(sizeof(object->points));
     struct Point2D *pn1, *pd1;
 
-    int cor = object->points[0].color;
+    int cor = object->fillColor;
 
     for (i = 0; i < object->curr_point; i++) {
         struct Point2D * p = &object->points[i];
@@ -163,7 +163,7 @@ void scanFill (struct Object2D * object, struct Window *window, struct BufferDev
         pd1 = srn2srd(pn1, device);
         pts[i].x = pd1->x;
         pts[i].y = pd1->y;
-        pts[i].color = pd1->color;
+        //pts[i].color = pd1->color;
     }
 
     int cnt = object->curr_point;

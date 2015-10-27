@@ -59,7 +59,6 @@ struct ViewPort {
  */
 struct Point2D {
     double x, y;
-    int color;
 };
 
 /** @struct Object2D
@@ -75,6 +74,8 @@ struct Object2D {
     int max_points;
     int curr_point;
     struct Point2D *points;
+    int fillColor;
+    int borderColor;
 };
 
 /** @struct RGBColor

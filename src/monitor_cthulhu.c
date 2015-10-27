@@ -33,16 +33,16 @@ int main(int argc, char *argv[]) {
 
     window1 = createWindow(-10, 0, -10, 0);
 
-    struct Object2D *obj1 = plotCircle(setPoint(-5,-5,1), 1, 30, 1);
+    struct Object2D *obj1 = plotCircle(setPoint(-5,-5), 1, 30, 1, 2);
 
-    struct Object2D *obj2 = createObject(6);
+    struct Object2D *obj2 = createObject(6, 2, 3);
 
-    setObject(setPoint(-9, -8, 1), obj2);
-    setObject(setPoint(-5, -6, 2), obj2);
-    setObject(setPoint(-2, -7, 1), obj2);
-    setObject(setPoint(-4, -2, 2), obj2);
+    setObject(setPoint(-9, -8), obj2);
+    setObject(setPoint(-5, -6), obj2);
+    setObject(setPoint(-2, -7), obj2);
+    setObject(setPoint(-4, -2), obj2);
 
-    setObject2DColor(obj2, 3);
+    //setObject2DColor(obj2, 3, 1);
 
 //    scale(obj2, 0.25, 0.25, getCenter(obj2));
 //    translate(obj2, -2, -3);

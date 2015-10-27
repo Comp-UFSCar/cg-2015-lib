@@ -76,19 +76,19 @@ void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
     free(pd2);
 }
 
-struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int color) {
+struct Object2D *plotCircle(struct Point2D *o, int r, int steps, int fillColor, int borderColor) {
     double x, y;
     double theta = 0, h, k, step;
     step = 2 * PI / steps;
     h = o->x;
     k = o->y;
     struct Object2D *sphere;
-    sphere = createObject(steps);
+    sphere = createObject(steps, borderColor, fillColor);
 
     for (theta = 0; theta < 2 * PI; theta += step) {
         x = h + r * cos(theta);
         y = k - r * sin(theta);
-        setObject(setPoint(x, y, color), sphere);
+        setObject(setPoint(x, y), sphere);
     }
 
     return sphere;
@@ -108,7 +108,7 @@ int drawObject(struct Object2D *object, struct Window *window, struct BufferDevi
 //               object->points[(i+1) % object->curr_point].y);
 
         drawLine(&object->points[i], &object->points[(i + 1) % object->curr_point],
-                 window, device, object->points[i].color);
+                 window, device, object->borderColor);
     }
 
     return True;
@@ -164,7 +164,7 @@ void rotate(struct Object2D *object, double radians, struct Point2D *axis) {
  * Rotates object by radians around an axis (x , y)
  */
 void rotateXY(struct Object2D *object, double radians, double x, double y) {
-    struct Point2D *point = setPoint(x, y, 0);
+    struct Point2D *point = setPoint(x, y);
 
     rotate(object, radians, point);
 }
@@ -234,7 +234,7 @@ struct Point2D *getCenter(struct Object2D *object) {
         }
     };
 
-    return setPoint((minX + maxX) / 2.0, (minY + maxY) / 2, 1);
+    return setPoint((minX + maxX) / 2.0, (minY + maxY) / 2);
 }
 
 struct Matrix3x3 *matrix3x3Identity() {
