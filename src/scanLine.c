@@ -98,13 +98,15 @@ void fillScan (int scan, Edge * active, struct Window *window, struct BufferDevi
 {
     Edge * p1, * p2;
     int i;
+    //TODO: For some reason the image was inverted so I inverted again. Find the real reason and fix it.
+    int j = device->ymax - scan;
 
     p1 = active->next;
     while (p1) {
         p2 = p1->next;
         for (i= (int) p1->xIntersect; i<p2->xIntersect; i++) {
             //setPixel((int) i, scan);
-            //device->buffer[i][scan] = 1;
+            device->buffer[j][i] = 1;
         }
         p1 = p2->next;
     }
@@ -149,13 +151,25 @@ void resortActiveList (Edge * active)
 
 void scanFill (struct Object2D * object, struct Window *window, struct BufferDevice *device)
 {
-    struct Point2D * pts = object->points;
+    int i;
+    struct Point2D *pts = malloc(sizeof(object->points));
+    struct Point2D *pn1, *pd1;
+
+    for (i = 0; i < object->curr_point; i++) {
+        struct Point2D * p = &object->points[i];
+
+        pn1 = sru2srn(p, window);
+        pd1 = srn2srd(pn1, device);
+        pts[i].x = pd1->x;
+        pts[i].y = pd1->y;
+        pts[i].color = pd1->color;
+    }
+
     int cnt = object->curr_point;
-    double hei = getHeight(object);
-    int height = ceil(hei);
+    int height = device->ymax;
 
     Edge * edges[height], * active;
-    int i, scan;
+    int scan;
 
     for (i=0; i<height; i++) {
         edges[i] = (Edge *) malloc (sizeof (Edge));

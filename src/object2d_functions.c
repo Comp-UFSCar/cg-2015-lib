@@ -228,6 +228,7 @@ struct Point2D* getCenter( struct Object2D *object ) {
     return setPoint( (minX + maxX)/2.0, (minY + maxY)/2, 1 );
 }
 
+//TODO: This function may not be necessary. Delete if confirmed.
 double getWidth( struct Object2D *object ) {
 
     int i;
@@ -252,6 +253,7 @@ double getWidth( struct Object2D *object ) {
 
 }
 
+//TODO: This function may not be necessary. Delete if confirmed.
 double getHeight( struct Object2D *object ) {
 
     int i;
@@ -274,6 +276,7 @@ double getHeight( struct Object2D *object ) {
     return maxY - minY;
 }
 
+//TODO: This function may not be necessary. Delete if confirmed.
 double getMinY( struct Object2D *object ) {
 
     int i;
