@@ -7,6 +7,8 @@
  *
  *  @author Thales Menato (thamenato)
  *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
+ *
  */
 
 #ifndef LINE_H
@@ -59,4 +61,9 @@ struct Matrix3x3 *matrix3x3Scale(float sx, float sy, struct Point2D axis, struct
 struct Matrix3x3 *matrix3x3RotateRadians(float radian, struct Point2D axis, struct Matrix3x3 mat);
 struct Matrix3x3 *matrix3x3RotateDegrees(float degree, struct Point2D axis, struct Matrix3x3 mat);
 void matrix3x3TransformPoints(struct Object2D *object2D, struct Matrix3x3 transform);
+
+double getWidth( struct Object2D *object );
+double getHeight( struct Object2D *object );
+double getMinY( struct Object2D *object );
+
 #endif //LINE_H

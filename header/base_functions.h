@@ -6,6 +6,7 @@
  *
  *  @author Thales Menato (thamenato)
  *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
  *
  */
 

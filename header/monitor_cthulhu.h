@@ -5,6 +5,8 @@
  *
  *  @author Thales Menato (thamenato)
  *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
+ *
  */
 
 #ifndef MONITOR_CTHULHU_H
@@ -19,6 +21,7 @@
 #include "structs.h"
 #include "../header/base_functions.h"
 #include "object2d_functions.h"
+#include "scanLine.h"
 
 
 #endif //MONITOR_CTHULHU_H

@@ -1,3 +1,11 @@
+/** @file object2d_functions.c
+ *  @brief Base object functions for the library.
+ *
+ *  @author Thales Menato (thamenato)
+ *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
+ *
+ */
 #include "../header/object2d_functions.h"
 
 void drawLine(struct Point2D *p1, struct Point2D *p2, struct Window *win,
@@ -142,8 +150,11 @@ void rotate(struct Object2D *object, double radians, struct Point2D *axis) {
     for (i = 0; i < object->curr_point; i++) {
         struct Point2D *p = &object->points[i];
 
-        p->x = rotateCos * p->x + rotateSin * p->y;
-        p->y = rotateCos * p->y - rotateSin * p->x;
+        double  x = p->x,
+                y = p->y;
+
+        p->x = rotateCos*x - rotateSin*y;
+        p->y = rotateSin*x + rotateCos*y;
     }
 
     translate(object, axis->x, axis->y);
@@ -300,3 +311,71 @@ void matrix3x3TransformPoints(struct Object2D *object2D, struct Matrix3x3 transf
 
     }
 }
+
+//TODO: This function may not be necessary. Delete if confirmed.
+double getWidth( struct Object2D *object ) {
+
+    int i;
+    double minX, maxX;
+
+    maxX = minX = object->points[0].x;
+
+    for( i = 1; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        if( maxX < p->x ) {
+            maxX = p->x;
+        }
+
+        if( minX > p->y ) {
+            minX = p->y;
+        }
+
+    };
+
+    return maxX - minX;
+
+}
+
+//TODO: This function may not be necessary. Delete if confirmed.
+double getHeight( struct Object2D *object ) {
+
+    int i;
+    double minY, maxY;
+
+    maxY = minY = object->points[0].y;
+
+    for( i = 1; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        if( maxY < p->y ) {
+            maxY = p->y;
+        }
+
+        if( minY > p->y ) {
+            minY = p->y;
+        }
+    };
+
+    return maxY - minY;
+}
+
+//TODO: This function may not be necessary. Delete if confirmed.
+double getMinY( struct Object2D *object ) {
+
+    int i;
+    double minY;
+
+    minY = object->points[0].y;
+
+    for( i = 1; i < object->curr_point; i++ ) {
+        struct Point2D *p = &object->points[i];
+
+        if( minY > p->y ) {
+            minY = p->y;
+        }
+    };
+
+    return minY;
+}
+

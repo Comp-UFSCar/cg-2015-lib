@@ -8,6 +8,7 @@
  *  Students:
  *      Thales Eduardo Adair Menato     407976
  *      Daniel Nobusada                 344443
+ *      Marcelo Lopes Lotufo            407933
  *
  *  If you're compiling manually using gcc don't forget to add the flags:
  *      -lm -lX11 -std=c99
@@ -48,6 +49,48 @@ int main(int argc, char *argv[]) {
 //    rotate(obj2, 0.78, getCenter(obj2));
 //    skew(obj2, 0, 0, getCenter(obj2));
 
+//    struct Object2D *obj1 = createObject(3);
+//
+//    setObject(setPoint(-9, -9, 1), obj1);
+//    setObject(setPoint(-5, -1, 1), obj1);
+//    setObject(setPoint(-1, -9, 1), obj1);
+
+//    struct Object2D *obj1 = createObject(3);
+//
+//    setObject(setPoint(-4, -4, 1), obj1);
+//    setObject(setPoint(-9, -4, 1), obj1);
+//    setObject(setPoint(-9, -9, 1), obj1);
+//    setObject(setPoint(-4, -9, 1), obj1);
+
+//    struct Object2D *obj1 = createObject(5);
+//
+//    setObject(setPoint(-1, -4, 1), obj1);
+//    setObject(setPoint(-5, -6, 1), obj1);
+//    setObject(setPoint(-9, -4, 1), obj1);
+//    setObject(setPoint(-9, -5, 1), obj1);
+//    setObject(setPoint(-6, -6, 1), obj1);
+//    setObject(setPoint(-4, -7, 1), obj1);
+
+
+    //obj1 = createCircle(5, 1);
+
+//    struct Object2D *obj1 = plotCircle(setPoint(-5,-5,1), 2, 30, 1);
+
+    //translate(obj1, 5, 0);
+//    scale(obj1, 0.1, 0.1, getCenter(obj1));
+//    rotate(obj1, 5, getCenter(obj1));
+//    //skew(obj1, 0.5, 0.5, getCenter(obj1));
+//
+//    drawObject(obj1, window1, device);
+//    scanFill(obj1, window1, device);
+
+//    for(int i=0; i<device->xmax; i++){
+//        for (int j=0; j<device->ymax; j++) {
+//            printf("%d", device->buffer[i][j]);
+//        }
+//        printf("\n");
+//    }
+
 //    drawObject(obj1, window1, device);
 
     struct Matrix3x3 *matTransf = matrix3x3Identity();
@@ -60,7 +103,9 @@ int main(int argc, char *argv[]) {
     matrix3x3TransformPoints(obj2, *matTransf);
 
     drawObject(obj1, window1, device);
+    scanFill(obj1, window1, device);
     drawObject(obj2, window1, device);
+    scanFill(obj2, window1, device);
 
     XDump(device, palette);
 
