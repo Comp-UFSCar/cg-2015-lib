@@ -37,21 +37,21 @@ int main(int argc, char *argv[]) {
 //    setObject(setPoint(-5, -1, 1), obj1);
 //    setObject(setPoint(-1, -9, 1), obj1);
 
-//    struct Object2D *obj1 = createObject(3);
-//
-//    setObject(setPoint(-4, -4, 1), obj1);
-//    setObject(setPoint(-9, -4, 1), obj1);
-//    setObject(setPoint(-9, -9, 1), obj1);
-//    setObject(setPoint(-4, -9, 1), obj1);
+    struct Object2D *obj1 = createObject(3);
 
-    struct Object2D *obj1 = createObject(5);
-
-    setObject(setPoint(-1, -4, 1), obj1);
-    setObject(setPoint(-5, -6, 1), obj1);
+    setObject(setPoint(-4, -4, 1), obj1);
     setObject(setPoint(-9, -4, 1), obj1);
-    setObject(setPoint(-9, -5, 1), obj1);
-    setObject(setPoint(-6, -6, 1), obj1);
-    setObject(setPoint(-4, -7, 1), obj1);
+    setObject(setPoint(-9, -9, 1), obj1);
+    setObject(setPoint(-4, -9, 1), obj1);
+
+//    struct Object2D *obj1 = createObject(5);
+//
+//    setObject(setPoint(-1, -4, 1), obj1);
+//    setObject(setPoint(-5, -6, 1), obj1);
+//    setObject(setPoint(-9, -4, 1), obj1);
+//    setObject(setPoint(-9, -5, 1), obj1);
+//    setObject(setPoint(-6, -6, 1), obj1);
+//    setObject(setPoint(-4, -7, 1), obj1);
 
 
     //obj1 = createCircle(5, 1);
@@ -59,8 +59,8 @@ int main(int argc, char *argv[]) {
 //    struct Object2D *obj1 = plotCircle(setPoint(-5,-5,1), 2, 30, 1);
 
     //translate(obj1, 5, 0);
-    //scale(obj1, 0.1, 0.1, getCenter(obj1));
-    //rotate(obj1, 3.14, getCenter(obj1));
+    scale(obj1, 0.1, 0.1, getCenter(obj1));
+    rotate(obj1, 5, getCenter(obj1));
     //skew(obj1, 0.5, 0.5, getCenter(obj1));
 
     drawObject(obj1, window1, device);
