@@ -18,96 +18,69 @@
 
 int main(int argc, char *argv[]) {
 
+    // limites extremos
+    world_xmin = -20;
+    world_ymin = -20;
+    world_xmax = 10;
+    world_ymax = 15;
+
+    // definição das estruturas estão dentro do arquivo header/structs.h
     struct BufferDevice *device;
     struct Palette *palette;
-    struct Window *window1;
-
-    device = createBuffer(640, 640);
-
-    palette = createPalette(4);
-    // black, white, red, green
-    addHSVColorToPalette(newHSVColor(0, 0, 0), palette);
-    addHSVColorToPalette(newHSVColor(0, 0, 1 * 255), palette);          // 1 * 255 = 100%
-    addHSVColorToPalette(newHSVColor(0, 1 * 255, 1 * 255), palette);
-    addRGBColorToPalette(newRGBColor(0, 255, 0), palette);
-
-    window1 = createWindow(-10, 0, -10, 0);
-
-    struct Object2D *obj1 = plotCircle(setPoint(-5,-5), 1, 30, 1, 2);
-
-    struct Object2D *obj2 = createObject(6, 2, 3);
-
-    setObject(setPoint(-9, -8), obj2);
-    setObject(setPoint(-5, -6), obj2);
-    setObject(setPoint(-2, -7), obj2);
-    setObject(setPoint(-4, -2), obj2);
-
-    //setObject2DColor(obj2, 3, 1);
-
-//    scale(obj2, 0.25, 0.25, getCenter(obj2));
-//    translate(obj2, -2, -3);
-//    rotate(obj2, 0.78, getCenter(obj2));
-//    skew(obj2, 0, 0, getCenter(obj2));
-
-//    struct Object2D *obj1 = createObject(3);
-//
-//    setObject(setPoint(-9, -9, 1), obj1);
-//    setObject(setPoint(-5, -1, 1), obj1);
-//    setObject(setPoint(-1, -9, 1), obj1);
-
-//    struct Object2D *obj1 = createObject(3);
-//
-//    setObject(setPoint(-4, -4, 1), obj1);
-//    setObject(setPoint(-9, -4, 1), obj1);
-//    setObject(setPoint(-9, -9, 1), obj1);
-//    setObject(setPoint(-4, -9, 1), obj1);
-
-//    struct Object2D *obj1 = createObject(5);
-//
-//    setObject(setPoint(-1, -4, 1), obj1);
-//    setObject(setPoint(-5, -6, 1), obj1);
-//    setObject(setPoint(-9, -4, 1), obj1);
-//    setObject(setPoint(-9, -5, 1), obj1);
-//    setObject(setPoint(-6, -6, 1), obj1);
-//    setObject(setPoint(-4, -7, 1), obj1);
-
-
-    //obj1 = createCircle(5, 1);
-
-//    struct Object2D *obj1 = plotCircle(setPoint(-5,-5,1), 2, 30, 1);
-
-    //translate(obj1, 5, 0);
-//    scale(obj1, 0.1, 0.1, getCenter(obj1));
-//    rotate(obj1, 5, getCenter(obj1));
-//    //skew(obj1, 0.5, 0.5, getCenter(obj1));
-//
-//    drawObject(obj1, window1, device);
-//    scanFill(obj1, window1, device);
-
-//    for(int i=0; i<device->xmax; i++){
-//        for (int j=0; j<device->ymax; j++) {
-//            printf("%d", device->buffer[i][j]);
-//        }
-//        printf("\n");
-//    }
-
-//    drawObject(obj1, window1, device);
-
+    struct Window *window1, *window2;
     struct Matrix3x3 *matTransf = matrix3x3Identity();
 
-    matTransf = matrix3x3Translate(0, 0, *matTransf);
-    matTransf = matrix3x3Scale(0.5, 0.5, *getCenter(obj2), *matTransf);
-    matTransf = matrix3x3RotateDegrees(90, *getCenter(obj2), *matTransf);
-//    matTransf = matrix3x3RotateRadians(0.785, *setPoint(0,0,0), *matTransf);
+    device = createBuffer(640, 480);
 
-    matrix3x3TransformPoints(obj2, *matTransf);
+    // paleta com 6 cores
+    palette = createPalette(7);
+    addRGBColorToPalette(newRGBColor(0, 0, 0), palette);    // preto
+    addRGBColorToPalette(newRGBColor(255, 0, 0), palette);  // vermelho
+    addRGBColorToPalette(newRGBColor(0, 0, 255), palette);  // azul
 
-    drawObject(obj1, window1, device);
-    scanFill(obj1, window1, device);
-    drawObject(obj2, window1, device);
-    scanFill(obj2, window1, device);
+    // Janela de visualização ideal para este caso
+    window1 = createWindow(-10, -10, 0, 0);
+
+    struct Object2D *polygon1 = createObject2D(5, 1, 1);
+    struct Object2D *polygon2 = createObject2D(4, 2, 2);
+
+    addPoint2DToObject2D(createPoint2D(-7, -3), polygon1);
+    addPoint2DToObject2D(createPoint2D(-4, -4), polygon1);
+    addPoint2DToObject2D(createPoint2D(-3, -6), polygon1);
+    addPoint2DToObject2D(createPoint2D(-6, -9), polygon1);
+    addPoint2DToObject2D(createPoint2D(-9, -8), polygon1);
+
+    addPoint2DToObject2D(createPoint2D(-1, -2), polygon2);
+    addPoint2DToObject2D(createPoint2D(-1, -6), polygon2);
+    addPoint2DToObject2D(createPoint2D(-6, -6), polygon2);
+    addPoint2DToObject2D(createPoint2D(-6, -2), polygon2);
+
+    // criacao do poligono 3 com mesmas informacoes do poligono 1 - exerc. a
+    struct Object2D *polygon3 = getObject2DClone(polygon1);
+
+    // rotacao de 45 graus no eixo (0,0)
+    matTransf = matrix3x3RotateDegrees(45, *createPoint2D(0,0), *matTransf);
+
+    // usar a matriz transformacao no poligono 3
+    matrix3x3TransformPoints(polygon3, *matTransf);
+
+    // modificar as cores
+    addHSVColorToPalette(newHSVColor(261, 0.87 * 255, 0.5 * 255), palette); // (H = 261º , S = 87%, V = 50%)
+    addHSVColorToPalette(newHSVColor(355, 0.89 * 255, 0.43 * 255), palette); // (H = 355º, S = 89%, V = 43%)
+    addHSVColorToPalette(newHSVColor(129, 0.70 * 255, 0.46 * 255), palette); // (H = 129º, S = 70%, V = 46%)
+
+    setObject2DColor(polygon1, 3, 3);
+    setObject2DColor(polygon2, 4, 4);
+    setObject2DColor(polygon3, 5, 5);
+
+    window2 = createWindow(-10, -13, 5, 5);
+
+    drawObject(polygon1, window2, device);
+    drawObject(polygon2, window2, device);
+    drawObject(polygon3, window2, device);
 
     XDump(device, palette);
 
     return 0;
+
 }

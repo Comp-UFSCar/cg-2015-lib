@@ -79,21 +79,26 @@ struct Point2D *srn2srd(struct Point2D *normP, struct BufferDevice *device);
  *  @param the color number that will be used as reference on Palette.
  *  @return Memory address with Point2D using parameters values.
  */
-struct Point2D *setPoint(double x, double y);
-// TODO: ou trocar essa funçãopara um createPoint que retorna o ponteiro de um Point2D, ou manter o setPoint que recebe um Point2D como parâmetro e retorna um int
+struct Point2D *createPoint2D(double x, double y);
+
 /** @brief Creates an Object2D allocating it's memory based on number of points.
  *  @param max_points Maximum of points that this object will have.
  *  @return Memory address with Object2D struct.
  */
-struct Object2D *createObject(int max_points, int borderColor, int fillColor);
+struct Object2D *createObject2D(int max_points, int borderColor, int fillColor);
 
-//TODO Documentacao do setObject
-// TODO: refatorar essa função para um nome condizente, por exemplo, addPointToOBject
-int setObject(struct Point2D *p, struct Object2D *obj);
+/** @brief Add a Point2D to an Object2D.
+ *  @param p Point2D that will be added to the object.
+ *  @param obj Object2D that will receive the point.
+ *  @return True if point was added, False otherwise.
+ */
+int addPoint2DToObject2D(struct Point2D *p, struct Object2D *obj);
 
 
-//TODO Documentacao do changeColor
-struct Object2D *changeColor(struct Object2D *object, int color);
+/** @brief Create an equivalent Object2D and return it.
+ *  @param object The Object2D that will be cloned.
+ */
+struct Object2D *getObject2DClone(struct Object2D *object);
 
 /** @brief Create a Palette with parameter number of colors.
  *  @param numberOfColors The number of colors that this Palette will have.
@@ -101,33 +106,71 @@ struct Object2D *changeColor(struct Object2D *object, int color);
  */
 struct Palette *createPalette(int numberOfColors);
 
-//TODO Documentacao newRGBColor
-struct RGBColor newRGBColor(float red, float green, float blue);
-
-//TODO Documentacao newHSVColor
-struct HSVColor newHSVColor(float hue, float saturation, float value);
-
-//TODO Documentacao HSVColorToPalette
-int addHSVColorToPalette(struct HSVColor hsvColor, struct Palette *palette);
-
-/** @brief Set a new color to a Palette.
+/** @brief Create an RGBColor.
  *
- *  Using float values in range [0,255] for each color (RGB), it tries to add a new
- *  color to the palette.
+ *  Using float values in range [0,255] for each color (RGB),
+ *  it defines a new struct RGBColor and returns it.
  *
  *  @param red float value in range [0,255] for Red color.
  *  @param green float value in range [0,255] for Green color.
  *  @param blue float value in range [0,255] for Blue color.
+ *  @return RGBColor containing all information passed.
+ */
+struct RGBColor newRGBColor(float red, float green, float blue);
+
+/** @brief Create an HSVColor.
+ *
+ *  Using float values in range [0,255] for each information (HSV),
+ *  it defines a new struct HSVColor and returns it.
+ *
+ *  @param hue float value in range [0,360] for hue.
+ *  @param saturation float value in range [0,255] for saturation.
+ *  @param value float value in range [0,255] for value.
+ *  @return HSVColor containing all information passed.
+ */
+struct HSVColor newHSVColor(float hue, float saturation, float value);
+
+/** @brief Add a HSVColor to the palette.
+ *
+ *  Converts the HSVColor received to RGBColor and add it to the palette.
+ *
+ *  @param hsvColor The HSVColor that will be added.
+ *  @param palette Palette where color will be added.
+ *  @return True if color was added, False otherwise.
+ */
+int addHSVColorToPalette(struct HSVColor hsvColor, struct Palette *palette);
+
+/** @brief Add a RGBColor to a Palette.
+ *
+ *  Tried to add a new RGBColor to the palette, if already full it will
+ *  return false.
+ *
+ *  @param rgbColor The RGBColor to be added.
+ *  @param palette Palette where color will be added.
  *  @return True if added to palette, False if palette was already full.
  */
 int addRGBColorToPalette(struct RGBColor rgbColor, struct Palette *palette);
 
 /** @brief Get a RGBColor from Palette.
+ *
+ *  Get the RGBColor representation of the color inside the palette
+ *  using colorNumber as index.
+ *
  *  @param colorNumber Index of color wanted.
  *  @param palette Palette that will be used.
- *  @return RGBColor defined on palette.
+ *  @return RGBColor defined on that palette index.
  */
-struct RGBColor *getColor(int colorNumber, struct Palette *palette);
+struct RGBColor *getRGBColorFromPalette(int colorNumber, struct Palette *palette);
+
+/** @brief Get a HSVColor from Palette.
+ *
+ *  Get the HSVColor representation of the color inside the palette
+ *  using colorNumber as index.
+ *
+ *  @param colorNumber Index of color wanted.
+ *  @param palette Palette that will be used.
+ *  @return HSVColor defined on that palette index.
+ */struct HSVColor *getHSVColorFromPalette(int colorNumber, struct Palette *palette);
 
 /** @brief Convert the color from RGB to HSV.
  *  @param rgbColor the RGB color to be converted.
@@ -141,7 +184,11 @@ struct HSVColor *rgb2hsv(struct RGBColor rgbColor);
  */
 struct RGBColor *hsv2rgb(struct HSVColor hsvColor);
 
-//TODO Documentacao setObject2DColor
+/** @brief Set the Object2D border and fill colors.
+ *  @param obj Object2D to receive color parameters.
+ *  @param borderColor int value of palette's color index for border.
+ *  @param fillColor int value of palette's color index for filling.
+ */
 void setObject2DColor(struct Object2D *obj, int borderColor, int fillColor);
 
 #endif

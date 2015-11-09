@@ -83,13 +83,13 @@ struct Object2D {
  *
  *  A RGBColor is not accessed directly, it is added inside a Palette.
  *
- *  @note The value of colors must be in range [0,1].
+ *  @note The value of colors must be in range [0,255].
  *  @var RGBColor::red
- *  Member 'red' is a float number in range [0,1].
+ *  Member 'red' is a float number in range [0,255].
  *  @var RGBColor::green
- *  Member 'green' is a float number in range [0,1].
+ *  Member 'green' is a float number in range [0,255].
  *  @var RGBColor::blue
- *  Member 'blue' is a float number in range [0,1].
+ *  Member 'blue' is a float number in range [0,255].
  */
 struct RGBColor {
     float red,
@@ -106,16 +106,13 @@ struct RGBColor {
  *  relevant than the cartesian (cube) representation. Developed in the 1970s for computer graphics applications,
  *  HSL and HSV are used today in color pickers, in image editing software, and less commonly in image analysis
  *  and computer vision." - Wikipedia (https://en.wikipedia.org/wiki/HSL_and_HSV)
- *  TODO: finalizar documantacao
- *  @note
+ *
  *  @var HSVColor::hue
- *
- *  @note
+ *  Member 'hue' is a float number in range [0, 360].
  *  @var HSVColor::saturation
- *
- *  @note
+ *  Member 'saturation' is a float number in range [0,255].
  *  @var HSVColor::value
- *
+ *  Member 'value' is a float number in range [0,255].
  */
 struct HSVColor {
     float hue,
@@ -162,6 +159,15 @@ struct BufferDevice {
     int **buffer;
 };
 
+/** @struct Matrix3x3
+ *  @brief Struct to define a 3x3 matrix.
+ *
+ *  This structure is used for Homogeneous coordinates and they are
+ *  operators for Object2D: translate, rotate, scale.
+ *
+ *  @var Matrix3x3::mat
+ *  A float matrix 3x3.
+ */
 struct Matrix3x3 {
 // based on http://read.pudn.com/downloads78/sourcecode/windows/opengl/299233/transformObject2.c__.htm
     float mat[3][3];
