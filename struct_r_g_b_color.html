@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Computer Graphics Library: Main Page</title>
+<title>Computer Graphics Library: RGBColor Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,9 +45,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -67,6 +67,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
+      <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
+    </ul>
+  </div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -79,7 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('index.html','');});
+$(document).ready(function(){initNavTree('struct_r_g_b_color.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -97,15 +104,80 @@ $(document).ready(function(){initNavTree('index.html','');});
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">Computer Graphics Library Documentation</div>  </div>
+<div class="title">RGBColor Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Defines a color, using RGB.  
+ <a href="struct_r_g_b_color.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="structs_8h_source.html">structs.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a42c3a4a0281e61ee592e36a3eda020f2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_g_b_color.html#a42c3a4a0281e61ee592e36a3eda020f2">red</a></td></tr>
+<tr class="separator:a42c3a4a0281e61ee592e36a3eda020f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad83fb941855ba7c4aa2bb65245437777"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_g_b_color.html#ad83fb941855ba7c4aa2bb65245437777">green</a></td></tr>
+<tr class="separator:ad83fb941855ba7c4aa2bb65245437777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6074166cc77c18081343a82d3af99bf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_r_g_b_color.html#aa6074166cc77c18081343a82d3af99bf">blue</a></td></tr>
+<tr class="separator:aa6074166cc77c18081343a82d3af99bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Defines a color, using RGB. </p>
+<p>A <a class="el" href="struct_r_g_b_color.html" title="Defines a color, using RGB. ">RGBColor</a> is not accessed directly, it is added inside a <a class="el" href="struct_palette.html" title="Defines a palette to be used. ">Palette</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>The value of colors must be in range [0,255]. </dd></dl>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a class="anchor" id="aa6074166cc77c18081343a82d3af99bf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">blue</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Member 'blue' is a float number in range [0,255]. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad83fb941855ba7c4aa2bb65245437777"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">green</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Member 'green' is a float number in range [0,255]. </p>
+
+</div>
+</div>
+<a class="anchor" id="a42c3a4a0281e61ee592e36a3eda020f2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">red</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Member 'red' is a float number in range [0,255]. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>G:/Programming_Workspace/GitHub/cg-2015-lib/header/<a class="el" href="structs_8h_source.html">structs.h</a></li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="struct_r_g_b_color.html">RGBColor</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>

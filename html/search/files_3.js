@@ -1,6 +1,0 @@
-var searchData=
-[
-  ['monitor_5fcthulhu_2ec',['monitor_cthulhu.c',['../monitor__cthulhu_8c.html',1,'']]],
-  ['monitor_5fcthulhu_2eh',['monitor_cthulhu.h',['../monitor__cthulhu_8h.html',1,'']]],
-  ['monitor_5fdebug_2ec',['monitor_debug.c',['../monitor__debug_8c.html',1,'']]]
-];

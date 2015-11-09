@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Computer Graphics Library: Main Page</title>
+<title>Computer Graphics Library: Computer Graphics and Multimedia (UFSCar/Fall 2015)</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,8 +45,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('index.html','');});
+$(document).ready(function(){initNavTree('md__g_1__programming__workspace__git_hub_cg-2015-lib__r_e_a_d_m_e.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -98,10 +98,34 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Computer Graphics Library Documentation</div>  </div>
+<div class="title">Computer Graphics and Multimedia (UFSCar/Fall 2015) </div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><h2>How to Compile/Execute </h2>
+<h5>Before:</h5>
+<p>Library <b>X11</b> and <b>CMake</b> are <b>required</b> to run this code so if you're using <em>Debian-based</em> (Linux Mint / Ubuntu) don't forget to: </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;sudo apt-get install libX11-dev </div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;sudo apt-get install cmake</div>
+</div><!-- fragment --><h5>Starting:</h5>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;# Clone the repository</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;git clone https://github.com/thamenato/computer_graphics_ufscar2015.git</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;# Cloning into &#39;computer_graphics_ufscar2015&#39;...</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;# ...</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;# Navigate to the directory</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;cd computer_graphics_ufscar2015</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;# Make a build directory and navigate to it</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;mkdir build</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;cd build</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;# Generate CMake cache and other stuff</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;cmake ..</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;# Time to compile</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;make</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;# If everything goes well and you see [100%] Built target monitor_cthulhu</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;# Execute the binary</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;./bin/monitor_cthulhu</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
