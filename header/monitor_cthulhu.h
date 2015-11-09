@@ -1,3 +1,14 @@
+/** @file monitor_cthulhu.h
+ *  @brief header file for main program
+ *
+ *  This contains all includes necessary for the main() to work.
+ *
+ *  @author Thales Menato (thamenato)
+ *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
+ *
+ */
+
 #ifndef MONITOR_CTHULHU_H
 #define MONITOR_CTHULHU_H
 
@@ -8,10 +19,9 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include "structs.h"
+#include "../header/base_functions.h"
+#include "object2d_functions.h"
+#include "scanLine.h"
 
-#define EventMask (KeyPressMask | ExposureMask)
-
-// Global variables
-struct Universe universe;  // Define the Universe
 
 #endif //MONITOR_CTHULHU_H

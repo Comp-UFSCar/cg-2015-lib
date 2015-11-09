@@ -3,10 +3,10 @@
  *
  *  @author Thales Menato (thamenato)
  *  @author Daniel Nobusada (nobusada)
+ *  @author Marcelo Lopes Lotufo (0tho)
  *
  */
 
-#include "../header/structs.h"
 #include "../header/base_functions.h"
 
 /*
@@ -23,7 +23,7 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
     XGCValues values;
     int m, n, screen, dplanes;
     int width, height;
-    struct Color *color;
+    struct RGBColor *color;
 
     width = device->xmax;
     height = device->ymax;
@@ -40,7 +40,7 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
             return False;
         else {
             XSelectInput(display, window, EventMask);
-            XStoreName(display, window, "Monitor Virtual");
+            XStoreName(display, window, "^(;,;)^ Monitor Cthulhu ^(;,;)^");
             gc = XCreateGC(display, window, 0, &values);
 
             XMapWindow(display, window);
@@ -51,10 +51,10 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
 
             for (m = 0; m < height; m++) {
                 for (n = 0; n < width; n++) {
-                    color = GetColor(device->buffer[m * width + n], palette);
-                    ximage->data[(m * 4) * width + n * 4] = (char) round((color->blue) * 255);
-                    ximage->data[(m * 4) * width + n * 4 + 1] = (char) round((color->green) * 255);
-                    ximage->data[(m * 4) * width + n * 4 + 2] = (char) round((color->red) * 255);
+                    color = getRGBColorFromPalette(device->buffer[m][n], palette);
+                    ximage->data[(m * 4) * width + n * 4] = (char) round((color->blue));
+                    ximage->data[(m * 4) * width + n * 4 + 1] = (char) round((color->green));
+                    ximage->data[(m * 4) * width + n * 4 + 2] = (char) round((color->red));
                     ximage->data[(m * 4) * width + n * 4 + 3] = (char) 0;
                 }
             }
@@ -86,17 +86,13 @@ int XDump(struct BufferDevice *device, struct Palette *palette) {
 }
 
 /*
- * Set the Universe values.
+ * Set the World values.
  */
-struct Universe *setUniverse(float xmin, float xmax, float ymin, float ymax) {
-    struct Universe *universe = (struct Universe *) malloc(sizeof(struct Universe *));
-
-    universe->xmin = xmin;
-    universe->xmax = xmax;
-    universe->ymin = ymin;
-    universe->ymax = ymax;
-
-    return universe;
+void setWorld(float xmin, float ymin, float xmax, float ymax) {
+    world_xmin = xmin;
+    world_xmax = xmax;
+    world_ymin = ymin;
+    world_ymax = ymax;
 }
 
 /*
@@ -107,7 +103,10 @@ struct BufferDevice *createBuffer(int xmax, int ymax) {
 
     device->xmax = xmax;
     device->ymax = ymax;
-    device->buffer = (int *) malloc(sizeof(int) * xmax * ymax);
+
+    device->buffer = (int **) malloc(ymax * sizeof(int *));
+    for (int i = 0; i < ymax; i++)
+        device->buffer[i] = (int *) malloc(xmax * sizeof(int));
 
     /*
      * simulate the matrix using:
@@ -121,7 +120,7 @@ struct BufferDevice *createBuffer(int xmax, int ymax) {
 /*
  * Allocates the memory for Window and set parameters.
  */
-struct Window *createWindow(float xmin, float xmax, float ymin, float ymax) {
+struct Window *createWindow(float xmin, float ymin, float xmax, float ymax) {
     struct Window *win = (struct Window *) malloc(sizeof(struct Window *));
 
     win->xmin = xmin;
@@ -159,12 +158,11 @@ struct Point2D *srn2srd(struct Point2D *normP, struct BufferDevice *device) {
 /*
  * Allocates memory and set values for Point2D members.
  */
-struct Point2D *setPoint(float x, float y, int color) {
+struct Point2D *createPoint2D(double x, double y) {
     struct Point2D *point = (struct Point2D *) malloc(sizeof(struct Point2D *));
 
     point->x = x;
     point->y = y;
-    point->color = color;
 
     return point;
 }
@@ -172,13 +170,44 @@ struct Point2D *setPoint(float x, float y, int color) {
 /*
  * Creates an Object2D allocating it's memory based on number of points.
  */
-struct Object2D *createObject(int numberOfPoints) {
+struct Object2D *createObject2D(int max_points, int borderColor, int fillColor) {
     struct Object2D *object = (struct Object2D *) malloc(sizeof(struct Object2D *));
 
-    object->numberOfPoints = numberOfPoints;
-    object->points = (struct Point2D *) malloc(sizeof(struct Point2D) * numberOfPoints);
+    object->max_points = max_points;
+    object->curr_point = 0;
+    object->points = (struct Point2D *) malloc(sizeof(struct Point2D) * max_points);
+    object->borderColor = borderColor;
+    object->fillColor = fillColor;
 
     return object;
+}
+
+/*
+ * Add a Point2D to an Object2D.
+ */
+int addPoint2DToObject2D(struct Point2D *p, struct Object2D *obj) {
+    if (obj->curr_point > obj->max_points)
+        return False;
+
+    obj->points[obj->curr_point] = *p;
+    obj->curr_point++;
+    return True;
+}
+
+/*
+ * Create an equivalent Object2D and return it.
+ */
+struct Object2D *getObject2DClone(struct Object2D *object) {
+    struct Object2D *clone = createObject2D(object->max_points, object->borderColor, object->fillColor);
+
+    double x, y;
+    for (int i = 0; i < object->curr_point; i++) {
+        x = object->points[i].x;
+        y = object->points[i].y;
+        addPoint2DToObject2D(createPoint2D(x, y), clone);
+    }
+
+    return clone;
 }
 
 /*
@@ -189,21 +218,48 @@ struct Palette *createPalette(int numberOfColors) {
 
     palette->numberOfColors = numberOfColors;
     palette->currentColor = 0;
-    palette->colors = (struct Color *) malloc(sizeof(struct Color) * numberOfColors);
+    palette->colors = (struct RGBColor *) malloc(sizeof(struct RGBColor) * numberOfColors);
 
     return palette;
 }
 
 /*
- * Set a new color to a Palette.
+ * Create a RGBColor.
  */
-int SetColor(float red, float green, float blue, struct Palette *palette) {
+struct RGBColor newRGBColor(float red, float green, float blue) {
+    struct RGBColor rgbColor;
+
+    rgbColor.red = red;
+    rgbColor.green = green;
+    rgbColor.blue = blue;
+
+    return rgbColor;
+}
+
+/*
+ * Create a HSVColor.
+ */
+struct HSVColor newHSVColor(float hue, float saturation, float value) {
+    struct HSVColor hsvColor;
+
+    hsvColor.hue = hue;
+    hsvColor.saturation = saturation;
+    hsvColor.value = value;
+
+    return hsvColor;
+}
+
+/*
+ * Add a HSVColor to the palette.
+ */
+int addHSVColorToPalette(struct HSVColor hsvColor, struct Palette *palette){
     if (palette->currentColor >= palette->numberOfColors)
         return False;
 
-    palette->colors[palette->currentColor].red = red;
-    palette->colors[palette->currentColor].green = green;
-    palette->colors[palette->currentColor].blue = blue;
+    struct RGBColor *rgbColor = hsv2rgb(hsvColor);
+    palette->colors[palette->currentColor].red = rgbColor->red;
+    palette->colors[palette->currentColor].green = rgbColor->green;
+    palette->colors[palette->currentColor].blue = rgbColor->blue;
 
     palette->currentColor++;
 
@@ -211,10 +267,124 @@ int SetColor(float red, float green, float blue, struct Palette *palette) {
 }
 
 /*
- * Get a Color from Palette.
+ * Add a RGBColor to a Palette.
  */
-struct Color *GetColor(int colorNumber, struct Palette *palette) {
+int addRGBColorToPalette(struct RGBColor rgbColor, struct Palette *palette) {
+    if (palette->currentColor >= palette->numberOfColors)
+        return False;
+
+    palette->colors[palette->currentColor].red = rgbColor.red;
+    palette->colors[palette->currentColor].green = rgbColor.green;
+    palette->colors[palette->currentColor].blue = rgbColor.blue;
+
+    palette->currentColor++;
+
+    return True;
+}
+
+/*
+ * Get a RGBColor from Palette.
+ */
+struct RGBColor *getRGBColorFromPalette(int colorNumber, struct Palette *palette) {
 
     return &palette->colors[colorNumber];
 }
 
+/*
+ * Get a HSVColor from Palette.
+ */
+struct HSVColor *getHSVColorFromPalette(int colorNumber, struct Palette *palette) {
+
+    return rgb2hsv(palette->colors[colorNumber]);
+}
+
+/*
+ * Convert the color from RGB to HSV.
+ */
+struct HSVColor *rgb2hsv(struct RGBColor rgbColor) {
+    // Based on https://gist.github.com/yoggy/8999625#file-rgb2hsv-cpp-L13
+    float   r = rgbColor.red / 255.0f,
+            g = rgbColor.green / 255.0f,
+            b = rgbColor.blue / 255.0f,
+            min, max, h, s, v;
+
+    struct HSVColor *hsvColor = (struct HSVColor *) malloc(sizeof(struct HSVColor));
+
+    max = fmaxf(r, fmaxf(g, b));
+    min = fminf(r, fminf(g, b));
+
+    v = max;
+
+    if (max == 0.0f) {
+        s = 0;
+        h = 0;
+    }
+    else if (max - min == 0.0f) {
+        s = 0;
+        h = 0;
+    }
+    else {
+        s = (max - min) / max;
+
+        if (max == r) {
+            h = 60 * ((g - b) / (max - min)) + 0;
+        }
+        else if (max == g) {
+            h = 60 * ((b - r) / (max - min)) + 120;
+        }
+        else {
+            h = 60 * ((r - g) / (max - min)) + 240;
+        }
+    }
+
+    if (h < 0) h += 360.0f;
+
+    hsvColor->hue = h;                // 0 - 360
+    hsvColor->saturation = s * 255;     // 0 - 255
+    hsvColor->value = v * 255;          // 0 - 255
+
+    return hsvColor;
+}
+
+/*
+ * Convert the color from HSV to RGB.
+ */
+struct RGBColor *hsv2rgb(struct HSVColor hsvColor) {
+    // Based on https://gist.github.com/yoggy/8999625#file-rgb2hsv-cpp-L55
+    struct RGBColor *rgbColor = (struct RGBColor *) malloc(sizeof(struct RGBColor));
+
+    float   h = hsvColor.hue,
+            s = hsvColor.saturation / 255.0f,
+            v = hsvColor.value / 255.0f;
+
+    float r, g, b;
+
+    int   hi = (int)(h / 60.0f) % 6;
+    float f  = (h / 60.0f) - hi;
+    float p  = v * (1.0f - s);
+    float q  = v * (1.0f - s * f);
+    float t  = v * (1.0f - s * (1.0f - f));
+
+    switch(hi) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+        default: r = 0, g = 0, b = 0; break;
+    }
+
+    rgbColor->red = r * 255;
+    rgbColor->green = g * 255;
+    rgbColor->blue = b * 255;
+    return rgbColor;
+}
+
+/*
+ * Set the Object2D border and fill colors.
+ */
+void setObject2DColor(struct Object2D *obj, int borderColor, int fillColor){
+    obj->borderColor = borderColor;
+    obj->fillColor = fillColor;
+}
