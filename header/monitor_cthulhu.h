@@ -19,9 +19,9 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include "structs.h"
-#include "../header/base_functions.h"
+#include "base_functions.h"
 #include "object2d_functions.h"
 #include "scanLine.h"
-
+#include "object3d_functions.h"
 
 #endif //MONITOR_CTHULHU_H

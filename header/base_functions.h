@@ -5,7 +5,6 @@
  *  and to work with all the available structures.
  *
  *  @author Thales Menato (thamenato)
- *  @author Daniel Nobusada (nobusada)
  *  @author Marcelo Lopes Lotufo (0tho)
  *
  */

@@ -1,18 +1,20 @@
 /** @file object2d_functions.h
- *  @brief Header for Line functions.
+ *  @brief Header for Object2D functions.
  *
- *  This contains functions that draw lines or circles.
+ *  This contains functions that draw lines or circles:
  *  - Straight lines, given two points in space.
  *  - Circle, given the radius.
  *
+ *  Also transformations to the object2D:
+ *  Translate, Rotate, Scale, Skew.
+ *
  *  @author Thales Menato (thamenato)
- *  @author Daniel Nobusada (nobusada)
  *  @author Marcelo Lopes Lotufo (0tho)
  *
  */
 
-#ifndef LINE_H
-#define LINE_H
+#ifndef OBJECT2D_FUNCTIONS_H
+#define OBJECT2D_FUNCTIONS_H
 
 #include "structs.h"
 #include "base_functions.h"
@@ -176,4 +178,4 @@ double getHeight(struct Object2D *object);
  */
 double getMinY(struct Object2D *object);
 
-#endif //LINE_H
+#endif

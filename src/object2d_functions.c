@@ -199,7 +199,7 @@ void skew(struct Object2D *object, double x, double y, struct Point2D *axis) {
     for (i = 0; i < object->curr_point; i++) {
         struct Point2D *p = &object->points[i];
 
-        printf("%d %d %d", p->x, p->y, x, y);
+//        printf("%d %d %d", p->x, p->y, x, y);
         p->x += x * p->y;
         p->y += y * p->x;
     }
@@ -255,7 +255,7 @@ struct Matrix3x3 *matrix3x3Identity() {
 }
 
 /*
- * Multiply two 3x3 matrix.
+ * Multiply two 3x3 matrix and return the result..
  */
 struct Matrix3x3 *matrix3x3Multiply(struct Matrix3x3 a, struct Matrix3x3 b) {
     struct Matrix3x3 *mult = malloc(sizeof(struct Matrix3x3));

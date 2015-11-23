@@ -10,7 +10,7 @@ set(SOURCE_FILES
         src/object2d_functions.c
         header/object2d_functions.h
         header/scanLine.h
-        src/scanLine.c)
+        src/scanLine.c src/object3d_functions.c header/object3d_functions.h)
 
 set(LIBS m X11)
 

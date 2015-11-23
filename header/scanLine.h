@@ -4,7 +4,6 @@
  *  This file contains the scan line algorithm for filling a polygons.
  *
  *  @author Thales Menato (thamenato)
- *  @author Daniel Nobusada (nobusada)
  *  @author Marcelo Lopes Lotufo (0tho)
  *
  */

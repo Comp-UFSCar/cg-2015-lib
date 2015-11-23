@@ -54,11 +54,22 @@ struct ViewPort {
  *  Member 'x' contains the x position.
  *  @var Point2D::y
  *  Member 'y' contains the y position.
- *  @var Point2D::color
- *  Member 'color' contains RGBColor reference number of a Palette.
  */
 struct Point2D {
     double x, y;
+};
+
+/** @struct Point3D
+ *  @brief Defines a point in a 3D space.
+ *  @var Point3D::x
+ *  Member 'x' contains the x position.
+ *  @var Point3D::y
+ *  Member 'y' contains the y position.
+ *  @var Point3D::z
+ *  Member 'z' contains the z position.
+ */
+struct Point3D {
+    float x, y, z;
 };
 
 /** @struct Object2D
@@ -69,11 +80,36 @@ struct Point2D {
  *  Member 'curr_point' is the current point set inside points array.
  *  @var Object2D::points
  *  Member 'points' is an array os points limited by max_points.
+ *  @var Object2D::fillColor
+ *  Member 'fillColor' is the color that fills this object.
+ *  @var Object2D::points
+ *  Member 'borderColor' is the color of this object border.
  */
 struct Object2D {
     int max_points;
     int curr_point;
     struct Point2D *points;
+    int fillColor;
+    int borderColor;
+};
+
+/** @struct Object3D
+ *  @brief Defines an object in a 3D space with multiple Point3D.
+ *  @var Object3D::max_points
+ *  Member 'max_points' sets the maximum number of points this object will have.
+ *  @var Object3D::curr_point
+ *  Member 'curr_point' is the current point set inside points array.
+ *  @var Object3D::points
+ *  Member 'points' is an array os points limited by max_points.
+ *  @var Object2D::fillColor
+ *  Member 'fillColor' is the color that fills this object.
+ *  @var Object2D::points
+ *  Member 'borderColor' is the color of this object border.
+ */
+struct Object3D {
+    int max_points;
+    int curr_point;
+    struct Point3D *points;
     int fillColor;
     int borderColor;
 };
@@ -96,7 +132,6 @@ struct RGBColor {
             green,
             blue;
 };
-
 
 /** @struct HSVColor
  *  @brief Defines a color, using HSV.
@@ -171,6 +206,20 @@ struct BufferDevice {
 struct Matrix3x3 {
 // based on http://read.pudn.com/downloads78/sourcecode/windows/opengl/299233/transformObject2.c__.htm
     float mat[3][3];
+};
+
+/** @struct Matrix4x4
+ *  @brief Struct to define a 4x4 Matrix.
+ *
+ *  This structure is used, similarly as Matrix3x3, for Homogeneous coordinates
+ *  and they are operator for Object3D.
+ *
+ *  @var Matrix4x4::mat
+ *  A float matrix 4x4.
+ */
+struct Matrix4x4 {
+// based on http://read.pudn.com/downloads78/sourcecode/windows/opengl/299233/transformObject3.c__.htm
+    float mat[4][4];
 };
 
 #endif

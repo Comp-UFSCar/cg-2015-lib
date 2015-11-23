@@ -7,7 +7,6 @@
  *
  *  Students:
  *      Thales Eduardo Adair Menato     407976
- *      Daniel Nobusada                 344443
  *      Marcelo Lopes Lotufo            407933
  *
  *  If you're compiling manually using gcc don't forget to add the flags:
@@ -25,62 +24,143 @@ int main(int argc, char *argv[]) {
     world_ymax = 15;
 
     // definição das estruturas estão dentro do arquivo header/structs.h
-    struct BufferDevice *device;
+    struct BufferDevice *device,
+            *viewport1,
+            *viewport2,
+            *viewport3,
+            *viewport4;
     struct Palette *palette;
-    struct Window *window1, *window2;
-    struct Matrix3x3 *matTransf = matrix3x3Identity();
+    struct Window 	*window1,
+            *window2,
+            *window3,
+            *window4;
 
     device = createBuffer(640, 480);
 
+    viewport1 = createBuffer(320, 240);
+    viewport2 = createBuffer(320, 240);
+    viewport3 = createBuffer(320, 240);
+    viewport4 = createBuffer(320, 240);
+
     // paleta com 6 cores
-    palette = createPalette(7);
+    palette = createPalette(6);
     addRGBColorToPalette(newRGBColor(0, 0, 0), palette);    // preto
+    addRGBColorToPalette(newRGBColor(255, 255, 255), palette);    // branco
     addRGBColorToPalette(newRGBColor(255, 0, 0), palette);  // vermelho
     addRGBColorToPalette(newRGBColor(0, 0, 255), palette);  // azul
+    addRGBColorToPalette(newRGBColor(0, 255, 0), palette);  // verde
+    addRGBColorToPalette(newRGBColor(255, 255, 0), palette);  // amarelo
 
-    // Janela de visualização ideal para este caso
-    window1 = createWindow(-10, -10, 0, 0);
+    // Poligono que representa a letra A
+    struct Object2D *polygonA = createObject2D(6, 2, 2);
 
-    struct Object2D *polygon1 = createObject2D(5, 1, 1);
-    struct Object2D *polygon2 = createObject2D(4, 2, 2);
+    addPoint2DToObject2D(createPoint2D(-6, -1), polygonA);
+    addPoint2DToObject2D(createPoint2D(-1, -11), polygonA);
+    addPoint2DToObject2D(createPoint2D(-3, -11), polygonA);
+    addPoint2DToObject2D(createPoint2D(-4, -9), polygonA);
+    addPoint2DToObject2D(createPoint2D(-8, -9), polygonA);
+    addPoint2DToObject2D(createPoint2D(-9, -11), polygonA);
+    addPoint2DToObject2D(createPoint2D(-11, -11), polygonA);
 
-    addPoint2DToObject2D(createPoint2D(-7, -3), polygon1);
-    addPoint2DToObject2D(createPoint2D(-4, -4), polygon1);
-    addPoint2DToObject2D(createPoint2D(-3, -6), polygon1);
-    addPoint2DToObject2D(createPoint2D(-6, -9), polygon1);
-    addPoint2DToObject2D(createPoint2D(-9, -8), polygon1);
+    // Poligono para fazer a "abertura" na letra
+    struct Object2D *polygonCenter = createObject2D(3, 2, 0);
 
-    addPoint2DToObject2D(createPoint2D(-1, -2), polygon2);
-    addPoint2DToObject2D(createPoint2D(-1, -6), polygon2);
-    addPoint2DToObject2D(createPoint2D(-6, -6), polygon2);
-    addPoint2DToObject2D(createPoint2D(-6, -2), polygon2);
+    addPoint2DToObject2D(createPoint2D(-6, -4), polygonCenter);
+    addPoint2DToObject2D(createPoint2D(-4, -7.5), polygonCenter);
+    addPoint2DToObject2D(createPoint2D(-8, -7.5), polygonCenter);
 
-    // criacao do poligono 3 com mesmas informacoes do poligono 1 - exerc. a
-    struct Object2D *polygon3 = getObject2DClone(polygon1);
+    // Matriz identidade
+    struct Matrix3x3 *matTransf;
 
-    // rotacao de 45 graus no eixo (0,0)
-    matTransf = matrix3x3RotateDegrees(45, *createPoint2D(0,0), *matTransf);
+    // Janelas de visualização para cada viewport
+    window1 = createWindow(-13, -13, 0, 0);
+    window2 = createWindow(-9, -9, 5, 5);
+    window3 = createWindow(-9, -9, 0, 0);
+    window4 = createWindow(-2, -2, 2, 2);
 
-    // usar a matriz transformacao no poligono 3
-    matrix3x3TransformPoints(polygon3, *matTransf);
+    //VIEWPORT1
+    matTransf = matrix3x3Identity();
+    matTransf = matrix3x3Scale(0.9, 0.9, *createPoint2D(0,0), *matTransf);
+    matrix3x3TransformPoints(polygonA, *matTransf);
+    matrix3x3TransformPoints(polygonCenter, *matTransf);
 
-    // modificar as cores
-    addHSVColorToPalette(newHSVColor(261, 0.87 * 255, 0.5 * 255), palette); // (H = 261º , S = 87%, V = 50%)
-    addHSVColorToPalette(newHSVColor(355, 0.89 * 255, 0.43 * 255), palette); // (H = 355º, S = 89%, V = 43%)
-    addHSVColorToPalette(newHSVColor(129, 0.70 * 255, 0.46 * 255), palette); // (H = 129º, S = 70%, V = 46%)
+    // Desenha e preenche todos os polígonos
+    scanFill(polygonA, window1, viewport1);
+    scanFill(polygonCenter, window1, viewport1);
+    drawObject(polygonA, window1, viewport1);
 
-    setObject2DColor(polygon1, 3, 3);
-    setObject2DColor(polygon2, 4, 4);
-    setObject2DColor(polygon3, 5, 5);
+    //VIEWPORT2
+    setObject2DColor(polygonA, 1, 1); // define a cor Branca para o polígono
+    matTransf = matrix3x3Identity();
+    matTransf = matrix3x3Scale(0.9, 0.9, *createPoint2D(0,0), *matTransf);
+    matTransf = matrix3x3Translate(2, 2, *matTransf);
+    matrix3x3TransformPoints(polygonA, *matTransf);
+    matrix3x3TransformPoints(polygonCenter, *matTransf);
 
-    window2 = createWindow(-10, -13, 5, 5);
+    skew(polygonA, 0.25, 0, getCenter(polygonA));
+    skew(polygonCenter, 0.25, 0, getCenter(polygonCenter));
 
-    drawObject(polygon1, window2, device);
-    drawObject(polygon2, window2, device);
-    drawObject(polygon3, window2, device);
+    scanFill(polygonA, window2, viewport2); 	// Preenchimento extra
+    scanFill(polygonCenter, window2, viewport2); 	// Preenchimento extra
+
+    drawObject(polygonA, window2, viewport2);
+
+
+    //VIEWPORT3
+    setObject2DColor(polygonA, 3, 3); // define a cor Azul para o polígono
+    matTransf = matrix3x3Identity();
+    matTransf = matrix3x3Scale(0.6, 0.6, *createPoint2D(0,0), *matTransf);
+    matTransf = matrix3x3Translate(-3, -2, *matTransf);
+    matrix3x3TransformPoints(polygonA, *matTransf);
+    matrix3x3TransformPoints(polygonCenter, *matTransf);
+
+    skew(polygonA, -0.9, 0, getCenter(polygonA));
+    skew(polygonCenter, -0.9, 0, getCenter(polygonCenter));
+
+    scanFill(polygonA, window3, viewport3);
+    scanFill(polygonCenter, window3, viewport3);
+
+    drawObject(polygonA, window3, viewport3);
+
+
+    //VIEWPORT4
+    setObject2DColor(polygonA, 4, 4);	// define a cor Verde
+    matTransf = matrix3x3Identity();
+    matTransf = matrix3x3Scale(0.5, 0.2, *createPoint2D(0,0), *matTransf);
+    matTransf = matrix3x3Translate(-2, 0, *matTransf);
+    matrix3x3TransformPoints(polygonA, *matTransf); // aplica transf. no pol1
+    matrix3x3TransformPoints(polygonCenter, *matTransf); // aplica transf. no pol1
+
+    scanFill(polygonA, window4, viewport4); 	// Preenchimento extra
+    scanFill(polygonCenter, window4, viewport4); 	// Preenchimento extra
+
+    drawObject(polygonA, window4, viewport4);
+
+    // Passa a informação das viewports para o device
+    for(int i = 0; i < 320; i++){
+        for(int j = 0; j < 240; j++){
+            device->buffer[j][i] = viewport1->buffer[j][i];
+            device->buffer[j+240][i] = viewport2->buffer[j][i];
+            device->buffer[j][i+320] = viewport3->buffer[j][i];
+            device->buffer[j+240][i+320] = viewport4->buffer[j][i];
+        }
+    }
+
+    /*
+    	O nome da função que estamos utilizando para geração da forma itálica se chama: skew
+    */
 
     XDump(device, palette);
 
     return 0;
+
+    /*
+        Resposta da pergunta opcional:
+
+        Todas as ferramentas de computação acabam com o tempo.
+        Sim, aprender os conceitos fundamentais nos permite entender e utilizar qualquer ferramenta,
+        além de criar novas tecnologias.
+
+    */
 
 }
