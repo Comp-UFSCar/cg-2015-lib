@@ -8,6 +8,105 @@
 #include "../header/object3d_functions.h"
 
 /*
+ * Cross Product
+ */
+struct Point3D * crossProduct(struct Point3D u, struct Point3D v){
+    struct Point3D *w = malloc(sizeof(struct Point3D));
+
+    w->x = u.y * v.z - u.z * v.y;
+    w->y = u.z * v.x - u.x * v.z;
+    w->z = u.x * v.y - u.y * v.x;
+
+    return w;
+}
+
+/*
+ * Euclidean Norm (length) of a Point 3D
+ */
+float euclideanNormPoint3D(struct Point3D p){
+    return sqrtf(powf(p.x, 2) + powf(p.y, 2) + powf(p.z, 2));
+}
+
+/*
+ * Unit Vector of a Point 3D
+ */
+struct Point3D * unitVector3D(struct Point3D p){
+    struct Point3D *unit_vector = malloc(sizeof(struct Point3D));
+
+    float ratio = 1/ euclideanNormPoint3D(p);
+    unit_vector->x = ratio * p.x;
+    unit_vector->y = ratio * p.y;
+    unit_vector->z = ratio * p.z;
+
+    return unit_vector;
+}
+
+/*
+ * Linear Transformation for Point 3D
+ */
+struct Point3D *linearTransfPoint3D(struct Matrix3x3 t, struct Point3D p){
+    struct Point3D *transf_p = malloc(sizeof(struct Point3D));
+
+    transf_p->x = t.mat[0][0] * p.x + t.mat[0][1] * p.y * t.mat[0][2] * p.z;
+    transf_p->y = t.mat[1][0] * p.x + t.mat[1][1] * p.y * t.mat[1][2] * p.z;
+    transf_p->z = t.mat[2][0] * p.x + t.mat[2][1] * p.y * t.mat[2][2] * p.z;
+
+    return transf_p;
+}
+
+/*
+ * Create Face
+ */
+struct Object3DFace *createFace(int number_of_points){
+    struct Object3DFace *face = malloc(sizeof(struct Object3DFace));
+
+    face->curr_point = 0;
+    face->max_points = number_of_points;
+    face->points = malloc(number_of_points * sizeof(struct Point3D));
+
+    return face;
+}
+
+/*
+ * Add a point to the Face
+ */
+int addPoint3DtoFace(struct Point3D *p, struct Object3DFace *face){
+    if(face->curr_point >= face->max_points)
+        return False;
+
+    face->points[face->curr_point] = *p;
+    face->curr_point++;
+
+    return True;
+}
+
+/*
+ * Create an Object3D
+ */
+struct Object3D *createObject3D(int number_of_faces){
+    struct Object3D *obj = malloc(sizeof(struct Object3D));
+
+    obj->curr_face = 0;
+    obj->number_of_faces = number_of_faces;
+    obj->faces = malloc(number_of_faces * sizeof(struct Object3DFace));
+
+    return obj;
+}
+
+/*
+ * Add Face to Object3D
+ */
+int addFaceToObject3D(struct Object3DFace *face, struct Object3D *obj){
+    if(obj->curr_face >= obj->number_of_faces)
+        return False;
+
+    obj->faces[obj->curr_face] = *face;
+    obj->curr_face++;
+
+    return True;
+}
+
+/*
  * 4x4 Identity Matrix.
  */
 struct Matrix4x4 *matrix4x4Identity() {
@@ -100,17 +199,18 @@ struct Matrix4x4 *matrix4x4RotateRadians(float radian, struct Point3D p1, struct
 /*
  * Apply homogeneous coordinates to Object3D.
  */
-void matrix4x4TransformPoints(struct Object3D *object3D, struct Matrix4x4 transform) {
-    float temp[3];
-    for(int i = 0; i < object3D->curr_point; i++){
-        for(int j = 0; j < 3; j++)
-            temp[j] = transform.mat[j][0] * object3D->points[i].x +
-                    transform.mat[j][1] * object3D->points[i].y +
-                    transform.mat[j][2] * object3D->points[i].z +
-                    transform.mat[j][3];
-
-            object3D->points[i].x = temp[0];
-            object3D->points[i].y = temp[1];
-            object3D->points[i].z = temp[2];
-    }
-}
+//TODO: arrumar a matriz para estrutura
+//void matrix4x4TransformPoints(struct Object3D *object3D, struct Matrix4x4 transform) {
+//    float temp[3];
+//    for(int i = 0; i < object3D->curr_point; i++){
+//        for(int j = 0; j < 3; j++)
+//            temp[j] = transform.mat[j][0] * object3D->points[i].x +
+//                    transform.mat[j][1] * object3D->points[i].y +
+//                    transform.mat[j][2] * object3D->points[i].z +
+//                    transform.mat[j][3];
+//
+//            object3D->points[i].x = temp[0];
+//            object3D->points[i].y = temp[1];
+//            object3D->points[i].z = temp[2];
+//    }
+//}

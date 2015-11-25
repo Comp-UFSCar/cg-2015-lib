@@ -93,25 +93,40 @@ struct Object2D {
     int borderColor;
 };
 
-/** @struct Object3D
- *  @brief Defines an object in a 3D space with multiple Point3D.
- *  @var Object3D::max_points
- *  Member 'max_points' sets the maximum number of points this object will have.
- *  @var Object3D::curr_point
- *  Member 'curr_point' is the current point set inside points array.
+/** @struct Object3DFace
+ *  @brief A face of an Object 3D.
+ *  @var Object3DFace::max_points
+ *  Member 'max_points' sets the maximum of points that this face can have.
+ *  @var Object3DFace::curr_points
+ *  Member 'curr_points' is number of points already defined.
  *  @var Object3D::points
- *  Member 'points' is an array os points limited by max_points.
+ *  Member 'points' is an array of points limited by max_points.
  *  @var Object2D::fillColor
  *  Member 'fillColor' is the color that fills this object.
  *  @var Object2D::points
  *  Member 'borderColor' is the color of this object border.
  */
-struct Object3D {
+struct Object3DFace {
     int max_points;
     int curr_point;
     struct Point3D *points;
     int fillColor;
     int borderColor;
+};
+
+/** @struct Object3D
+ *  @brief Defines an object in a 3D space with multiple Point3D.
+ *  @var Object3D::number_of_faces
+ *  Member 'max_points' sets the maximum number of points this object will have.
+ *  @var Object3D::curr_face
+ *  Member 'curr_face' is the current face set inside points array.
+ *  @var Object3D::faces
+ *  Member 'faces' is an array containing all faces of the Object3D.
+ */
+struct Object3D {
+    int number_of_faces;
+    int curr_face;
+    struct Object3DFace * faces;
 };
 
 /** @struct RGBColor
@@ -151,8 +166,8 @@ struct RGBColor {
  */
 struct HSVColor {
     float hue,
-        saturation,
-        value;
+            saturation,
+            value;
 };
 
 /** @struct Palette
@@ -222,4 +237,37 @@ struct Matrix4x4 {
     float mat[4][4];
 };
 
+/*
+struct Point3D {
+  float x,
+        y,
+	z;
+  int   color;
+  };
+
+typedef struct Point3D point3d;
+
+struct Face {
+  int numbers_of_points;
+  point3d * points;
+  };l
+
+typedef struct Face face;
+
+struct Object3D {
+  int numbers_of_faces;
+  face * faces;
+  };
+
+typedef struct Object3D object3d;
+
+struct Matrix3D {
+  float a11, a12, a13,
+        a21, a22, a23,
+        a31, a32, a33;
+        };
+
+typedef struct Matrix3D matrix3d;
+
+ */
 #endif
