@@ -93,6 +93,17 @@ struct Object3D *createObject3D(int number_of_faces){
     return obj;
 }
 
+struct Point3D *createPoint3D(float x, float y, float z) {
+
+    struct Point3D *point = malloc(sizeof(struct Point3D));
+
+    point->x = x;
+    point->y = y;
+    point->z = z;
+
+    return point;
+}
+
 /*
  * Add Face to Object3D
  */
@@ -196,6 +207,8 @@ struct Matrix4x4 *matrix4x4RotateRadians(float radian, struct Point3D p1, struct
     return matrix4x4Multiply(*rotate, *translate);
 }
 
+
+
 /*
  * Apply homogeneous coordinates to Object3D.
  */
@@ -214,3 +227,32 @@ struct Matrix4x4 *matrix4x4RotateRadians(float radian, struct Point3D p1, struct
 //            object3D->points[i].z = temp[2];
 //    }
 //}
+
+struct Point3D *matrix3x3MultiplyVector(struct Matrix3x3 matrix, struct Point3D p) {
+    float new_x, new_y, new_z;
+
+    new_x = p.x * matrix.mat[0][0] + p.y * matrix.mat[0][1] + p.z * matrix.mat[0][2];
+    new_y = p.x * matrix.mat[1][0] + p.y * matrix.mat[1][1] + p.z * matrix.mat[1][2];
+    new_z = p.x * matrix.mat[2][0] + p.y * matrix.mat[2][1] + p.z * matrix.mat[2][2];
+
+    return createPoint3D(new_x, new_y, new_z);
+}
+
+struct Object3D * convertObject3DBase(struct Matrix3x3 * matrix, struct Object3D *object) {
+
+    int i, j;
+    struct Object3D *newObject = createObject3D(object->number_of_faces);
+
+    // For each face in object
+    for( i = 0; i < object->curr_face; i++ ) {
+        struct Object3DFace * face = createFace(object->faces[i].max_points);
+
+        // For each point in face
+        for( j = 0; j < object->faces[i].curr_point; j++ ) {
+            // Multiply matrix with vector coordinates
+            addPoint3DtoFace(matrix3x3MultiplyVector(*matrix, object->faces[i].points[j]), face);
+        }
+        addFaceToObject3D(face, newObject);
+    }
+    return newObject;
+}
